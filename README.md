@@ -1,5 +1,8 @@
 # SYSC 4806 Project - Group 7
 
+
+![CI Status](https://github.com/CarletonU-2223-SAV/SYSC4806-Project/actions/workflows/maven.yaml/badge.svg)
+
 Chosen topic: Amazin Bookstore & FaaS, Microservices, Amazon Lambda
 
 > Bookstore Owner can upload and edit Book information (ISBN, picture, description, author, publisher,...) and inventory. 
