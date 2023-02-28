@@ -14,4 +14,5 @@ Chosen topic: Amazin Bookstore & FaaS, Microservices, Amazon Lambda
 
 - Milestone 1: March 8 2023
 - Milestone 2: March 22 2023
+- Group Presentation: March 26 2023
 - Milestone 3: April 5 2023
