@@ -1,9 +1,11 @@
 package com.groupseven.sysc4806project;
 
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.Assert.*;
 
+@SpringBootTest
 public class BookTest {
 
     @Test

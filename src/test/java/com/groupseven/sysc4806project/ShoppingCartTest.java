@@ -1,11 +1,14 @@
 package com.groupseven.sysc4806project;
 
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+@SpringBootTest
 public class ShoppingCartTest {
 
     @org.junit.Test
