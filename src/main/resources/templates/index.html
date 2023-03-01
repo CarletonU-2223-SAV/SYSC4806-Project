@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Amazin Bookstore</title>
+</head>
+<body>
+    <h1>Amazin!!</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>g</th>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Publisher</th>
+                <th>Inventory</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book : ${books}">
+                <td><img th:src="${book.getPicture()}"></td>
+                <th th:text="${book.getIsbn()}" />
+                <td th:text="${book.getTitle()}" />
+                <td th:text="${book.getAuthor()}" />
+                <td th:text="${book.getDescription()}" />
+                <td th:text="${book.getPublisher()}" />
+                <td th:text="${book.getInventory()}" />
+                <td>
+                    <select>
+                        <option>1</option>
+                        <option>2</option>
+                    </select>
+                    <button>Add to cart</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p th:if="${books == null || books.isEmpty()}">There are no books to display</p>
+</body>
+</html>
