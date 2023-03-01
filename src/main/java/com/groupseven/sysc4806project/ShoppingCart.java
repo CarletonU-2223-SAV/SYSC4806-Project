@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class ShoppingCart {
 
-    private Long cart_ID;
+    private int cart_ID;
     private User customer;
     private List<Book> books;
 
@@ -19,7 +19,7 @@ public class ShoppingCart {
 
     @Id
     @GeneratedValue
-    public Long getCart_ID() {
+    public int getCart_ID() {
         return cart_ID;
     }
     @OneToOne
@@ -32,7 +32,7 @@ public class ShoppingCart {
         return books;
     }
 
-    public void setCart_ID(Long cart_ID) {
+    public void setCart_ID(int cart_ID) {
         this.cart_ID = cart_ID;
     }
 

@@ -7,7 +7,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class User {
-    private Long user_ID;
+    private int user_ID;
     private boolean isAdmin;
     private String name;
     private ShoppingCart cart;
@@ -17,11 +17,11 @@ public class User {
 
     @Id
     @GeneratedValue
-    public Long getUser_ID() {
+    public int getUser_ID() {
         return user_ID;
     }
 
-    public void setUser_ID(Long user_ID) {
+    public void setUser_ID(int user_ID) {
         this.user_ID = user_ID;
     }
 

@@ -8,15 +8,18 @@ import java.awt.*;
 import java.io.Serializable;
 @Entity
 public class Book implements Serializable {
-    private Long id;
+    private int id;
     private Image picture;
     private int inventory;
+
+
+
     private String isbn, description, title, author, publisher;
 
     public Book() {
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -50,7 +53,7 @@ public class Book implements Serializable {
 
     @Id
     @GeneratedValue
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -78,4 +81,5 @@ public class Book implements Serializable {
     public String getPublisher() {
         return publisher;
     }
+
 }
