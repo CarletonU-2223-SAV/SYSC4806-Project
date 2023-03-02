@@ -31,7 +31,7 @@ public class BookService {
     }
 
     @PostMapping("")
-    public Boolean create(
+    public Integer create(
             @RequestParam String isbn,
             @RequestParam String title,
             @RequestParam(defaultValue = "") String description,
@@ -51,13 +51,13 @@ public class BookService {
         this.repo.save(newBook);
 
         if (image != null) {
-            return newBook.setImage(image);
+            newBook.setImage(image);
         }
 
-        return true;
+        return newBook.getId();
     }
 
-    @PatchMapping("/{bookId}")
+    @PostMapping("/{bookId}")
     public Boolean update(
         @PathVariable Integer bookId,
         @RequestParam(required = false) String isbn,
@@ -100,10 +100,29 @@ public class BookService {
             book.setInventory(inventory);
         }
 
+        this.repo.save(book);
+
         if (image != null) {
             return book.setImage(image);
         }
 
+        return true;
+    }
+
+    @DeleteMapping("/{bookId}")
+    public Boolean delete(@PathVariable Integer bookId) {
+        Optional<Book> bookOptional = this.repo.findById(bookId);
+        if (bookOptional.isEmpty()) {
+            // Could not find book with given ID
+            return false;
+        }
+
+        Book b = bookOptional.get();
+
+        // Free up image file
+        b.removeImage();
+
+        this.repo.delete(bookOptional.get());
         return true;
     }
 }

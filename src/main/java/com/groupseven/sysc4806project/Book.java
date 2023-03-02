@@ -1,5 +1,6 @@
 package com.groupseven.sysc4806project;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -60,11 +61,12 @@ public class Book {
     }
 
     @Transient
-    public String getImage() {
+    public String getImageUrl() {
         return "/" + id + ".png";
     }
 
     @Transient
+    @JsonIgnore
     public boolean setImage(MultipartFile image) {
         Path savePath = Paths.get(IMAGE_DIR + id + ".png");
 
@@ -84,6 +86,21 @@ public class Book {
             return false;
         }
 
+        return true;
+    }
+
+    @Transient
+    @JsonIgnore
+    public boolean removeImage() {
+        Path savePath = Paths.get(IMAGE_DIR + id + ".png");
+        if (Files.exists(savePath)) {
+            try {
+                Files.delete(savePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
         return true;
     }
 
@@ -111,4 +128,12 @@ public class Book {
         return publisher;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Book b)) {
+            return false;
+        }
+
+        return b.getId() == this.id;
+    }
 }
