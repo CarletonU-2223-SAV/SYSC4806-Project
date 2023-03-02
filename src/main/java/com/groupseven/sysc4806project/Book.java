@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import java.awt.*;
 import java.io.Serializable;
 @Entity
-public class Book implements Serializable {
+public class Book {
     private int id;
     private Image picture;
     private int inventory;
