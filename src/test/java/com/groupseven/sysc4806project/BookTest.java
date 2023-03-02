@@ -58,6 +58,6 @@ public class BookTest {
     }
 
     @Test
-    public void set_getPicture() {
+    public void getImage() {
     }
 }

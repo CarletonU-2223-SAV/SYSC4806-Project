@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Entity
 public class Book {
     private int id;
-    private Image picture;
     private int inventory;
 
 
@@ -21,10 +20,6 @@ public class Book {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setPicture(Image picture) {
-        this.picture = picture;
     }
 
     public void setInventory(int inventory) {
@@ -51,13 +46,14 @@ public class Book {
         this.publisher = publisher;
     }
 
+
     @Id
     @GeneratedValue
     public int getId() {
         return id;
     }
 
-
+    public String image() {return "";}
     public int getInventory() {
         return inventory;
     }
