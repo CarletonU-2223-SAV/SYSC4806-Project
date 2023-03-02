@@ -1,24 +1,24 @@
 package com.groupseven.sysc4806project;
 
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class ShoppingCartTest {
 
-    @org.junit.Test
+    @Test
     public void set_getCart_ID() {
         ShoppingCart cart = new ShoppingCart();
         cart.setCart_ID(1);
         assertEquals(1, cart.getCart_ID());
     }
 
-    @org.junit.Test
+    @Test
     public void set_getCustomer() {
         User customer = new User();
         ShoppingCart cart = new ShoppingCart();
@@ -27,7 +27,7 @@ public class ShoppingCartTest {
         assertEquals(customer.getUser_ID(), cart.getCustomer().getUser_ID());
     }
 
-    @org.junit.Test
+    @Test
     public void set_getBooks() {
         ShoppingCart cart = new ShoppingCart();
         List<Book> books = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ShoppingCartTest {
         assertEquals(books, cart.getBooks());
     }
 
-    @org.junit.Test
+    @Test
     public void checkout() {
     }
 }
