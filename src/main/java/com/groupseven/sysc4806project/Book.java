@@ -1,15 +1,25 @@
 package com.groupseven.sysc4806project;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @Entity
 public class Book {
+    private static final String IMAGE_DIR = "resources/static/";
+
     private int id;
     private int inventory;
-
-
 
     private String isbn, description, title, author, publisher;
 
@@ -44,14 +54,56 @@ public class Book {
         this.publisher = publisher;
     }
 
-
     @Id
     @GeneratedValue
     public int getId() {
         return id;
     }
 
-    public String image() {return "";}
+    @Transient
+    public String getImageUrl() {
+        return "/" + id + ".png";
+    }
+
+    @Transient
+    @JsonIgnore
+    public boolean setImage(MultipartFile image) {
+        Path savePath = Paths.get(IMAGE_DIR + id + ".png");
+
+        if (!Files.exists(savePath)) {
+            try {
+                Files.createDirectories(savePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        try (InputStream is = image.getInputStream()) {
+            Files.copy(is, savePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Transient
+    @JsonIgnore
+    public boolean removeImage() {
+        Path savePath = Paths.get(IMAGE_DIR + id + ".png");
+        if (Files.exists(savePath)) {
+            try {
+                Files.delete(savePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
     public int getInventory() {
         return inventory;
     }
@@ -76,4 +128,12 @@ public class Book {
         return publisher;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Book b)) {
+            return false;
+        }
+
+        return b.getId() == this.id;
+    }
 }
