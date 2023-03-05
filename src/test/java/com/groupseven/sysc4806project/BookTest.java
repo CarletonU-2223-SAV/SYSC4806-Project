@@ -76,7 +76,7 @@ public class BookTest {
     public void getImage() {
         Book book = new Book();
         book.setId(1);
-        assertEquals("/1.png", book.getImageUrl());
+        assertEquals("/book-img/default.svg", book.getImageUrl());
     }
 
     @Test
