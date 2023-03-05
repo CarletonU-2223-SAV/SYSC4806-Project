@@ -1,23 +1,12 @@
 package com.groupseven.sysc4806project;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Entity
 public class Book {
-    private static final String IMAGE_DIR = "resources/static/book-img";
-
     private int id;
     private int inventory;
 
@@ -62,51 +51,7 @@ public class Book {
 
     @Transient
     public String getImageUrl() {
-        Path imagePath = Paths.get(IMAGE_DIR + id + ".png");
-        if (Files.exists(imagePath)) {
-            return "/book-img" + id + ".png";
-        } else {
-            return "/book-img/default.svg";
-        }
-    }
-
-    @Transient
-    @JsonIgnore
-    public boolean setImage(MultipartFile image) {
-        Path savePath = Paths.get(IMAGE_DIR + id + ".png");
-
-        if (!Files.exists(savePath)) {
-            try {
-                Files.createDirectories(savePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        try (InputStream is = image.getInputStream()) {
-            Files.copy(is, savePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
-    @Transient
-    @JsonIgnore
-    public boolean removeImage() {
-        Path savePath = Paths.get(IMAGE_DIR + id + ".png");
-        if (Files.exists(savePath)) {
-            try {
-                Files.delete(savePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        return true;
+        return "/book-img/" + id;
     }
 
     public int getInventory() {
