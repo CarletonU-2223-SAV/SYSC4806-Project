@@ -62,7 +62,12 @@ public class Book {
 
     @Transient
     public String getImageUrl() {
-        return "/" + id + ".png";
+        Path imagePath = Paths.get(IMAGE_DIR + id + ".png");
+        if (Files.exists(imagePath)) {
+            return "/book-img" + id + ".png";
+        } else {
+            return "/book-img/default.svg";
+        }
     }
 
     @Transient

@@ -4,41 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <title>Amazin Bookstore</title>
+
+    <!-- Use Tailwind for CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Amazin!!</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>g</th>
-                <th>ISBN</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Description</th>
-                <th>Publisher</th>
-                <th>Inventory</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="book : ${books}">
-                <td><img th:src="${book.getPicture()}"></td>
-                <th th:text="${book.getIsbn()}" />
-                <td th:text="${book.getTitle()}" />
-                <td th:text="${book.getAuthor()}" />
-                <td th:text="${book.getDescription()}" />
-                <td th:text="${book.getPublisher()}" />
-                <td th:text="${book.getInventory()}" />
-                <td>
-                    <select>
-                        <option>1</option>
-                        <option>2</option>
-                    </select>
-                    <button>Add to cart</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <p th:if="${books == null || books.isEmpty()}">There are no books to display</p>
+    <!-- Include header at top of page -->
+    <div th:insert="~{header :: header}"></div>
+    <div class="mx-4">
+        <!-- Search filters and new book button -->
+        <div class="flex justify-between items-end py-4">
+            <div>
+                <p>Search filters:</p>
+                <form action="/home" method="GET">
+                    <label for="isbnInput">ISBN:</label>
+                    <input type="text" id="isbnInput" name="isbn" class="border-2 rounded-md">
+                    <label for="titleInput" class="pl-4">Title:</label>
+                    <input type="text" id="titleInput" name="title" class="border-2 rounded-md">
+                    <label for="authorInput" class="pl-4">Author:</label>
+                    <input type="text" id="authorInput" name="author" class="border-2 rounded-md">
+                    <label for="publisherInput" class="pl-4">Publisher:</label>
+                    <input type="text" id="publisherInput" name="publisher" class="border-2 rounded-md">
+                    <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-4">Search</button>
+                </form>
+            </div>
+            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1">Add new book</button>
+        </div>
+
+        <!-- Books table or error message -->
+        <div>
+            <table th:unless="${books == null || books.isEmpty()}" class="w-full">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>ISBN</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Description</th>
+                    <th>Publisher</th>
+                    <th>Inventory</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody class="text-center">
+                <tr th:each="book : ${books}">
+                    <td class="w-16 h-16">
+                        <a>
+                            <img th:src="${book.getImageUrl()}">
+                        </a>
+                    </td>
+                    <td>
+                        <a th:text="${book.getIsbn()}" />
+                    </td>
+                    <td>
+                        <a th:text="${book.getTitle()}" />
+                    </td>
+                    <td>
+                        <a th:href="'/home?author=' + ${book.getAuthor()}" th:text="${book.getAuthor()}" />
+                    </td>
+                    <td th:text="${book.getDescription()}" />
+                    <td>
+                        <a th:href="'/home?publisher=' + ${book.getPublisher()}" th:text="${book.getPublisher()}" />
+                    </td>
+                    <td th:text="${book.getInventory()}" />
+                    <td>
+                        <div th:if="${book.getInventory() == 0}">
+                            <p class="text-red-600">Out of stock</p>
+                        </div>
+                        <div th:if="${book.getInventory() > 0}">
+                            <select class="p-2">
+                                <option th:each="i : ${#numbers.sequence(1, book.getInventory())}" th:text="${i}" />
+                            </select>
+                            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Add to cart</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p th:if="${books == null || books.isEmpty()}">There are no books to display</p>
+        </div>
+    </div>
 </body>
 </html>
