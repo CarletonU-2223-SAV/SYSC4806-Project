@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @SpringBootTest
 public class UserTest {
 
@@ -34,6 +36,6 @@ public class UserTest {
     public void set_get_isAdmin() {
         User user = new User();
         user.setAdmin(true);
-        assertEquals(true, user.isAdmin());
+        assertTrue(user.isAdmin());
     }
 }
