@@ -16,7 +16,7 @@ import java.nio.file.StandardCopyOption;
 
 @Entity
 public class Book {
-    private static final String IMAGE_DIR = "resources/static/";
+    private static final String IMAGE_DIR = "resources/static/book-img";
 
     private int id;
     private int inventory;
