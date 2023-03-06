@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Amazin Bookstore</title>
+
+  <!-- Use Tailwind for CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div>
+    <form action="#" th:action="@{/home/add-book}" method="post">
+      <p>
+        <p>ISBN: <input type="text" name="isbn"/>
+        <p>Title: <input type="text" name="title"/>
+        <p>Description: <input type="text" name="description"/>
+        <p>Author: <input type="text" name="author"/>
+        <p>Publisher: <input type="text" name="publisher"/>
+        <p>Inventory: <input type="number" name="inventory"/>
+        <input type="submit" value="Add" />
+        <input type="reset" value="Reset" />
+      </p>
+    </form>
+  </div>
+</body>
+</html>
