@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/users")
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
+    private final UserRepository userRepository;
+
+    @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
@@ -25,6 +26,6 @@ public class UserService {
         user.setName(name);
         user.setAdmin(isAdmin);
         userRepository.save(user);
-        return user.getUser_ID();
+        return user.getId();
     }
 }

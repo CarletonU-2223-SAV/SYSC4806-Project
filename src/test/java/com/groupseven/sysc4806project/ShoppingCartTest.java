@@ -24,8 +24,8 @@ public class ShoppingCartTest {
     @Test
     public void set_getCart_ID() {
         ShoppingCart cart = new ShoppingCart();
-        cart.setCart_ID(1);
-        assertEquals(1, cart.getCart_ID());
+        cart.setId(1);
+        assertEquals(1, cart.getId());
     }
 
     @Test
@@ -33,7 +33,7 @@ public class ShoppingCartTest {
         User customer = new User();
         ShoppingCart cart = new ShoppingCart();
         cart.setCustomer(customer);
-        assertEquals(customer.getUser_ID(), cart.getCustomer().getUser_ID());
+        assertEquals(customer.getId(), cart.getCustomer().getId());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ShoppingCartTest {
         shoppingCartRepository.save(cart);
 
         ResponseEntity<ShoppingCart> response = restTemplate.getForEntity(
-                "/api/carts/" + cart.getCart_ID(),
+                "/api/carts/" + cart.getId(),
                 ShoppingCart.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -116,7 +116,7 @@ public class ShoppingCartTest {
         shoppingCartRepository.save(cart);
 
         ResponseEntity<Book[]> response = restTemplate.getForEntity(
-                "/api/carts/" + cart.getCart_ID() + "/books",
+                "/api/carts/" + cart.getId() + "/books",
                 Book[].class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -135,14 +135,14 @@ public class ShoppingCartTest {
         bookRepository.save(book);
 
         ResponseEntity<Boolean> response = restTemplate.getForEntity(
-                "/api/carts/" + cart.getCart_ID() + "/" + book.getId(),
+                "/api/carts/" + cart.getId() + "/" + book.getId(),
                 Boolean.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertTrue(response.getBody());
 
-        cart = shoppingCartRepository.findById(cart.getCart_ID()).orElseThrow();
+        cart = shoppingCartRepository.findById(cart.getId()).orElseThrow();
         book = bookRepository.findById(book.getId()).orElseThrow();
         assertTrue(cart.getBooks().contains(book));
     }
@@ -155,7 +155,7 @@ public class ShoppingCartTest {
         shoppingCartRepository.save(cart);
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/carts/" + cart.getCart_ID() + "/" + book.getId(),
+                "/api/carts/" + cart.getId() + "/" + book.getId(),
                 HttpMethod.DELETE,
                 HttpEntity.EMPTY,
                 Boolean.class
@@ -164,7 +164,7 @@ public class ShoppingCartTest {
         assertNotNull(response.getBody());
         assertTrue(response.getBody());
 
-        cart = shoppingCartRepository.findById(cart.getCart_ID()).orElseThrow();
+        cart = shoppingCartRepository.findById(cart.getId()).orElseThrow();
         assertFalse(cart.getBooks().contains(book));
     }
 
@@ -180,14 +180,14 @@ public class ShoppingCartTest {
         params.add("orderAmount", 5);
 
         ResponseEntity<Boolean> response = restTemplate.postForEntity(
-                "/api/carts/" + cart.getCart_ID() + "/" + book.getId(),
+                "/api/carts/" + cart.getId() + "/" + book.getId(),
                 params,
                 Boolean.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertTrue(response.getBody());
-        cart = shoppingCartRepository.findById(cart.getCart_ID()).orElseThrow();
+        cart = shoppingCartRepository.findById(cart.getId()).orElseThrow();
         assertEquals(5, cart.getBook(book.getId()).getOrderAmount());
     }
 
@@ -197,10 +197,10 @@ public class ShoppingCartTest {
         for (int i = 0; i < 10; i++){
             cart.addBook(new Book());
         }
-        shoppingCartRepository.save(cart);
+        this.shoppingCartRepository.save(cart);
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/carts/" + cart.getCart_ID(),
+                "/api/carts/" + cart.getId(),
                 HttpMethod.DELETE,
                 HttpEntity.EMPTY,
                 Boolean.class
@@ -208,18 +208,18 @@ public class ShoppingCartTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertTrue(response.getBody());
-        cart = shoppingCartRepository.findById(cart.getCart_ID()).orElseThrow();
+        cart = this.shoppingCartRepository.findById(cart.getId()).orElseThrow();
         assertTrue(cart.getBooks().isEmpty());
     }
 
     @Test
     public void testDeleteCart(){
         ShoppingCart cart = new ShoppingCart();
-        int id = cart.getCart_ID();
+        int id = cart.getId();
         shoppingCartRepository.save(cart);
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/carts/" + cart.getCart_ID(),
+                "/api/carts/" + id,
                 HttpMethod.DELETE,
                 null,
                 Boolean.class

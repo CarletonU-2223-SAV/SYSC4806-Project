@@ -9,11 +9,12 @@ import java.util.*;
 @RequestMapping("/api/carts")
 public class ShoppingCartService {
 
-    @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
+
+    private final ShoppingCartRepository shoppingCartRepository;
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
     public ShoppingCartService (ShoppingCartRepository shoppingCartRepository){
         this.shoppingCartRepository = shoppingCartRepository;
     }
@@ -28,7 +29,7 @@ public class ShoppingCartService {
         ShoppingCart cart = new ShoppingCart();
         cart.setCustomer(user);
         shoppingCartRepository.save(cart);
-        return cart.getCart_ID();
+        return cart.getId();
     }
 
     @GetMapping("/{cartId}/books")

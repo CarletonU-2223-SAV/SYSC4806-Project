@@ -3,11 +3,10 @@ package com.groupseven.sysc4806project;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class User {
-    private int user_ID;
+    private int id;
     private boolean isAdmin;
     private String name;
 
@@ -16,12 +15,12 @@ public class User {
 
     @Id
     @GeneratedValue
-    public int getUser_ID() {
-        return user_ID;
+    public int getId() {
+        return id;
     }
 
-    public void setUser_ID(int user_ID) {
-        this.user_ID = user_ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isAdmin() {

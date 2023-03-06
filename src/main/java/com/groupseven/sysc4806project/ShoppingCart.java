@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class ShoppingCart {
 
-    private int cart_ID;
+    private int id;
     private User customer;
     private List<Book> books;
 
@@ -19,21 +19,21 @@ public class ShoppingCart {
 
     @Id
     @GeneratedValue
-    public int getCart_ID() {
-        return cart_ID;
+    public int getId() {
+        return id;
     }
     @OneToOne
     public User getCustomer() {
         return customer;
     }
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     public List<Book> getBooks() {
         return books;
     }
 
-    public void setCart_ID(int cart_ID) {
-        this.cart_ID = cart_ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCustomer(User customer) {

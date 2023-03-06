@@ -23,8 +23,8 @@ public class UserTest {
     @Test
     public void set_getUser_ID() {
         User user = new User();
-        user.setUser_ID(4);
-        assertEquals(4, user.getUser_ID());
+        user.setId(4);
+        assertEquals(4, user.getId());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class UserTest {
         userRepository.save(user);
 
         ResponseEntity<User> response = restTemplate.getForEntity(
-                "/api/user" + user.getUser_ID(),
+                "/api/users" + user.getId(),
                 User.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -61,7 +61,7 @@ public class UserTest {
         params.add("user", "Kevin Smith");
         params.add("isAdmin", "true");
         ResponseEntity<Integer> response = restTemplate.postForEntity(
-                "/api/user",
+                "/api/users",
                 params,
                 Integer.class
         );
