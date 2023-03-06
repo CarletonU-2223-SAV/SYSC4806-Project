@@ -17,5 +17,7 @@ public class ShoppingCartController {
     }
 
     @GetMapping("")
-    public String cart()
+    public String cart(){
+        return "cart";
+    }
 }
