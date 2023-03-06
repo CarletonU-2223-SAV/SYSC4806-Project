@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/shoppingCart")
+@RequestMapping("/api/cart")
 public class ShoppingCartService {
 
     @Autowired
@@ -31,16 +31,16 @@ public class ShoppingCartService {
         return cart.getCart_ID();
     }
 
-    @GetMapping("/{cartId}")
+    @GetMapping("/{cartId}/books")
     public List<Book> listBooksInCart(@PathVariable int cartId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         assert cart != null;
         return cart.getBooks();
     }
 
-    @PostMapping("/{cartId}")
+    @GetMapping("/{cartId}/{bookId}")
     public Boolean addBookToCart(@PathVariable int cartId,
-                                 @RequestParam int bookId
+                                 @PathVariable int bookId
                         ){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
@@ -52,9 +52,9 @@ public class ShoppingCartService {
         return true;
     }
 
-    @DeleteMapping("/{cartId}")
+    @DeleteMapping("/{cartId}/{bookId}")
     public Boolean removeBookFromCart(@PathVariable int cartId,
-                                      @RequestParam int bookId){
+                                      @PathVariable int bookId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         if (cart == null){
             return false;
@@ -64,9 +64,9 @@ public class ShoppingCartService {
         return true;
     }
 
-    @PostMapping("/{cartId}")
+    @PostMapping("/{cartId}/{bookId}")
     public Boolean changeBookInv(@PathVariable int cartId,
-                              @RequestParam int bookId,
+                              @PathVariable int bookId,
                               @RequestParam int newInvAmount){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         if (cart == null){
@@ -78,14 +78,24 @@ public class ShoppingCartService {
         return true;
     }
 
-    @PostMapping("/{cartId}")
+    @DeleteMapping ("/{cartId}")
     public Boolean clearCart(@PathVariable int cartId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         if (cart == null){
             return false;
         }
-        cart.checkout();
+        cart.clearCart();
         shoppingCartRepository.save(cart);
+        return true;
+    }
+
+    @DeleteMapping ("/{cartId}")
+    public Boolean deleteCart(@PathVariable int cartId){
+        ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
+        if (cart == null){
+            return false;
+        }
+        shoppingCartRepository.delete(cart);
         return true;
     }
 }

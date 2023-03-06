@@ -63,7 +63,10 @@ public class ShoppingCart {
         return null;
     }
 
-    public void checkout() {
+    public void clearCart(){
         books.clear();
+    }
+
+    public void checkout() {
     }
 }
