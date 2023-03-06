@@ -18,42 +18,74 @@ public class ShoppingCartService {
         this.shoppingCartRepository = shoppingCartRepository;
     }
 
-    @GetMapping("")
-    public List<Book> list(){
-        List<Book> bookList = new ArrayList<>();
-        this.shoppingCartRepository.findAll().iterator().forEachRemaining(bookList::add);
-        return bookList;
-    }
-
-    @RequestMapping("/{bookId}")
-    public Book addBook(@PathVariable int bookId){
-        Book book = bookRepository.findById(bookId).orElse(null);
-        assert book != null;
-        shoppingCartRepository.save(book);
-        return book;
-    }
-
-    @DeleteMapping("/{bookId}")
-    public Book removeBook(@PathVariable int bookId){
-        Book book = shoppingCartRepository.findById(bookId).orElse(null);
-        assert book != null;
-        shoppingCartRepository.delete(book);
-        return book;
-    }
-
-    @PostMapping("/{bookId}")
-    public Book changeBookInv(@PathVariable int bookId,
-                              @RequestParam int newInvAmount){
-        Book book = shoppingCartRepository.findById(bookId).orElse(null);
-        assert book != null;
-        book.setInventory(newInvAmount);
-        shoppingCartRepository.save(book);
-        return book;
+    @GetMapping("/{cartId}")
+    public ShoppingCart getCart(@PathVariable int cartId){
+        return shoppingCartRepository.findById(cartId).orElse(null);
     }
 
     @PostMapping("")
-    public Boolean clearCart(){
-        shoppingCartRepository.deleteAll();
+    public Integer createCart(@RequestParam User user){
+        ShoppingCart cart = new ShoppingCart();
+        cart.setCustomer(user);
+        shoppingCartRepository.save(cart);
+        return cart.getCart_ID();
+    }
+
+    @GetMapping("/{cartId}")
+    public List<Book> listBooksInCart(@PathVariable int cartId){
+        ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
+        assert cart != null;
+        return cart.getBooks();
+    }
+
+    @PostMapping("/{cartId}")
+    public Boolean addBookToCart(@PathVariable int cartId,
+                                 @RequestParam int bookId
+                        ){
+        ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if (cart == null || book == null){
+            return false;
+        }
+        cart.addBook(book);
+        shoppingCartRepository.save(cart);
+        return true;
+    }
+
+    @DeleteMapping("/{cartId}")
+    public Boolean removeBookFromCart(@PathVariable int cartId,
+                                      @RequestParam int bookId){
+        ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
+        if (cart == null){
+            return false;
+        }
+        cart.removeBook(bookId);
+        shoppingCartRepository.save(cart);
+        return true;
+    }
+
+    @PostMapping("/{cartId}")
+    public Boolean changeBookInv(@PathVariable int cartId,
+                              @RequestParam int bookId,
+                              @RequestParam int newInvAmount){
+        ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
+        if (cart == null){
+            return false;
+        }
+        Book book = cart.getBook(bookId);
+        book.setInventory(newInvAmount);
+        shoppingCartRepository.save(cart);
+        return true;
+    }
+
+    @PostMapping("/{cartId}")
+    public Boolean clearCart(@PathVariable int cartId){
+        ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
+        if (cart == null){
+            return false;
+        }
+        cart.checkout();
+        shoppingCartRepository.save(cart);
         return true;
     }
 }

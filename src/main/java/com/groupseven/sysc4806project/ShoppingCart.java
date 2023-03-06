@@ -44,7 +44,26 @@ public class ShoppingCart {
         this.books = books;
     }
 
-    public void checkout() {
+    public void addBook(Book book){
+        if (book != null){
+            this.books.add(book);
+        }
+    }
 
+    public void removeBook(int id){
+        this.books.removeIf(book -> book.getId() == id);
+    }
+
+    public Book getBook(int id){
+        for (Book book: books){
+            if (book.getId() == id){
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public void checkout() {
+        books.clear();
     }
 }

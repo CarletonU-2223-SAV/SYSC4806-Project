@@ -22,7 +22,6 @@ public class ShoppingCartTest {
     public void set_getCustomer() {
         User customer = new User();
         ShoppingCart cart = new ShoppingCart();
-        customer.setCart(cart);
         cart.setCustomer(customer);
         assertEquals(customer.getUser_ID(), cart.getCustomer().getUser_ID());
     }

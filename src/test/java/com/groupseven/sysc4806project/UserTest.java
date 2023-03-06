@@ -24,15 +24,6 @@ public class UserTest {
     }
 
     @Test
-    public void set_getCart() {
-        User user = new User();
-        ShoppingCart cart = new ShoppingCart();
-        cart.setCustomer(user);
-        user.setCart(cart);
-        assertEquals(cart, user.getCart());
-    }
-
-    @Test
     public void set_get_isAdmin() {
         User user = new User();
         user.setAdmin(true);

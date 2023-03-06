@@ -10,7 +10,6 @@ public class User {
     private int user_ID;
     private boolean isAdmin;
     private String name;
-    private ShoppingCart cart;
 
     public User() {
     }
@@ -39,14 +38,5 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @OneToOne
-    public ShoppingCart getCart() {
-        return cart;
-    }
-
-    public void setCart(ShoppingCart cart) {
-        this.cart = cart;
     }
 }
