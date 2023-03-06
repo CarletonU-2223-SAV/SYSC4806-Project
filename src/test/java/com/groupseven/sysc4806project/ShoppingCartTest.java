@@ -172,6 +172,7 @@ public class ShoppingCartTest {
     public void testChangeOrderAmount() {
         ShoppingCart cart = new ShoppingCart();
         Book book = new Book();
+        book.setInventory(20);
         book.setOrderAmount(10);
         cart.addBook(book);
         shoppingCartRepository.save(cart);
