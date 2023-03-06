@@ -12,10 +12,12 @@ import java.util.Optional;
 @RequestMapping("/api/books")
 public class BookService {
     private final BookRepository repo;
+    private final ImageService imageService;
 
     @Autowired
-    public BookService(BookRepository repo) {
+    public BookService(BookRepository repo, ImageService imageService) {
         this.repo = repo;
+        this.imageService = imageService;
     }
 
     @GetMapping("")
@@ -51,7 +53,7 @@ public class BookService {
         this.repo.save(newBook);
 
         if (image != null) {
-            newBook.setImage(image);
+            imageService.writeImage(newBook.getId(), image);
         }
 
         return newBook.getId();
@@ -103,7 +105,7 @@ public class BookService {
         this.repo.save(book);
 
         if (image != null) {
-            return book.setImage(image);
+            return imageService.writeImage(book.getId(), image);
         }
 
         return true;
@@ -117,10 +119,8 @@ public class BookService {
             return false;
         }
 
-        Book b = bookOptional.get();
-
         // Free up image file
-        b.removeImage();
+        imageService.removeImage(bookId);
 
         this.repo.delete(bookOptional.get());
         return true;
