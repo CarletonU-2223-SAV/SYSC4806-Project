@@ -11,14 +11,14 @@ public class ShoppingCartService {
 
 
     private final ShoppingCartRepository shoppingCartRepository;
-    @Autowired
-    private BookRepository bookRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ShoppingCartService (ShoppingCartRepository shoppingCartRepository){
+    public ShoppingCartService (ShoppingCartRepository shoppingCartRepository, BookRepository bookRepository, UserRepository userRepository){
         this.shoppingCartRepository = shoppingCartRepository;
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/{cartId}")
@@ -29,17 +29,27 @@ public class ShoppingCartService {
     @GetMapping("/create/{userId}")
     public Integer createCart(@PathVariable int userId){
         User user = userRepository.findById(userId).orElse(null);
-        assert user != null;
-        ShoppingCart cart = new ShoppingCart();
-        cart.setCustomer(user);
-        shoppingCartRepository.save(cart);
+        if (user == null){
+            //user not in repo
+            return null;
+        }
+        ShoppingCart cart = shoppingCartRepository.findByCustomer(user);
+        if (cart == null){
+            //user doesn't already have a cart, create new one
+            cart = new ShoppingCart();
+            cart.setCustomer(user);
+            shoppingCartRepository.save(cart);
+        }
         return cart.getId();
     }
 
     @GetMapping("/{cartId}/books")
-    public List<Book> listBooksInCart(@PathVariable int cartId){
+    public Map<Integer, Integer> listBooksInCart(@PathVariable int cartId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
-        assert cart != null;
+        if (cart == null){
+            //cart not in repo
+            return null;
+        }
         return cart.getBooks();
     }
 
@@ -50,23 +60,33 @@ public class ShoppingCartService {
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
         if (cart == null || book == null){
+            //cart or book not in repo
             return false;
         }
-        cart.addBook(book);
-        shoppingCartRepository.save(cart);
-        return true;
+        if (cart.addBookID(bookId)){
+            shoppingCartRepository.save(cart);
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     @DeleteMapping("/{cartId}/{bookId}")
     public Boolean removeBookFromCart(@PathVariable int cartId,
                                       @PathVariable int bookId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
-        if (cart == null){
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if (cart == null || book == null){
+            //cart or book not in repo
             return false;
         }
-        cart.removeBook(bookId);
-        shoppingCartRepository.save(cart);
-        return true;
+        if (cart.removeBookID(bookId)){
+            shoppingCartRepository.save(cart);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @PostMapping("/{cartId}/{bookId}")
@@ -74,16 +94,16 @@ public class ShoppingCartService {
                                      @PathVariable int bookId,
                                      @RequestParam int orderAmount){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
-        if (cart == null){
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if (cart == null || book == null || orderAmount > book.getInventory()){
             return false;
         }
-        Book book = cart.getBook(bookId);
-        if (orderAmount > book.getInventory()){
+        if (cart.setOrderAmount(orderAmount, bookId)){
+            shoppingCartRepository.save(cart);
+            return true;
+        }else{
             return false;
         }
-        book.setOrderAmount(orderAmount);
-        shoppingCartRepository.save(cart);
-        return true;
     }
 
     @DeleteMapping ("/clear/{cartId}")
@@ -92,7 +112,7 @@ public class ShoppingCartService {
         if (cart == null){
             return false;
         }
-        cart.clearCart();
+        cart.clear();
         shoppingCartRepository.save(cart);
         return true;
     }

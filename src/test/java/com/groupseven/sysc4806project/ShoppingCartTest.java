@@ -7,6 +7,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.*;
 
@@ -41,7 +42,7 @@ public class ShoppingCartTest {
     @Test
     public void set_getBooks() {
         ShoppingCart cart = new ShoppingCart();
-        List<Book> books = new ArrayList<>();
+        Map<Integer, Integer> books = new HashMap<>();
         cart.setBooks(books);
         assertEquals(books, cart.getBooks());
     }
@@ -51,29 +52,40 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void addBook(){
+    public void get_addBookID(){
         ShoppingCart cart = new ShoppingCart();
         Book book = new Book();
-        cart.addBook(book);
-        assertEquals(book, cart.getBook(book.getId()));
+        int id = book.getId();
+        cart.addBookID(id);
+        assertTrue(cart.getBooks().containsKey(id));
     }
 
     @Test
-    public void removeBook(){
+    public void removeBookID(){
         ShoppingCart cart = new ShoppingCart();
         Book book1 = new Book();
         Book book2 = new Book();
-        cart.removeBook(book2.getId());
-        assertFalse(cart.getBooks().contains(book2));
+        cart.addBookID(book1.getId());
+        cart.addBookID(book2.getId());
+        assertTrue(cart.removeBookID(book2.getId()));
     }
 
+    @Test
+    public void set_getOrderAmount(){
+        ShoppingCart cart = new ShoppingCart();
+        Book book1 = new Book();
+        int id = book1.getId();
+        cart.addBookID(id);
+        cart.setOrderAmount(10, id);
+        assertEquals(10, cart.getOrderAmount(id));
+    }
     @Test
     public void clearCart(){
         ShoppingCart cart = new ShoppingCart();
         for (int i = 0; i < 10; i++){
-            cart.addBook(new Book());
+            cart.addBookID(new Book().getId());
         }
-        cart.clearCart();
+        cart.clear();
         assertTrue(cart.getBooks().isEmpty());
     }
 
@@ -112,19 +124,21 @@ public class ShoppingCartTest {
     public void testListBooksInCart(){
         ShoppingCart cart = new ShoppingCart();
         for (int i = 0; i < 10; i++){
-            cart.addBook(new Book());
+            cart.addBookID(new Book().getId());
         }
         shoppingCartRepository.save(cart);
 
-        ResponseEntity<Book[]> response = restTemplate.getForEntity(
+        ResponseEntity<Map<Integer, Integer>> response = restTemplate.exchange(
                 "/api/carts/" + cart.getId() + "/books",
-                Book[].class
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Map<Integer, Integer>>() {}
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
 
-        for (Book book : response.getBody()){
-            assertTrue(cart.getBooks().contains(book));
+        for (int id : response.getBody().keySet()){
+            assertTrue(cart.getBooks().containsKey(id));
         }
     }
 
@@ -145,14 +159,15 @@ public class ShoppingCartTest {
 
         cart = shoppingCartRepository.findById(cart.getId()).orElseThrow();
         book = bookRepository.findById(book.getId()).orElseThrow();
-        assertTrue(cart.getBooks().contains(book));
+        assertTrue(cart.getBooks().containsKey(book.getId()), String.valueOf(cart.getBooks()));
     }
 
     @Test
     public void testRemoveBookFromCart(){
         ShoppingCart cart = new ShoppingCart();
         Book book = new Book();
-        cart.addBook(book);
+        bookRepository.save(book);
+        cart.addBookID(book.getId());
         shoppingCartRepository.save(cart);
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
@@ -166,7 +181,7 @@ public class ShoppingCartTest {
         assertTrue(response.getBody());
 
         cart = shoppingCartRepository.findById(cart.getId()).orElseThrow();
-        assertFalse(cart.getBooks().contains(book));
+        assertFalse(cart.getBooks().containsKey(book.getId()));
     }
 
     @Test
@@ -174,8 +189,9 @@ public class ShoppingCartTest {
         ShoppingCart cart = new ShoppingCart();
         Book book = new Book();
         book.setInventory(20);
-        book.setOrderAmount(10);
-        cart.addBook(book);
+        bookRepository.save(book);
+        cart.addBookID(book.getId());
+        cart.setOrderAmount(10, book.getId());
         shoppingCartRepository.save(cart);
 
         MultiValueMap<String, Integer> params = new LinkedMultiValueMap<>();
@@ -186,18 +202,19 @@ public class ShoppingCartTest {
                 params,
                 Boolean.class
         );
+        cart = shoppingCartRepository.findById(cart.getId()).orElseThrow();
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertTrue(response.getBody());
-        cart = shoppingCartRepository.findById(cart.getId()).orElseThrow();
-        assertEquals(5, cart.getBook(book.getId()).getOrderAmount());
+        assertTrue(response.getBody(), String.valueOf(cart.getBooks()));
+
+        assertEquals(5, cart.getOrderAmount(book.getId()));
     }
 
     @Test
     public void testClearCart(){
         ShoppingCart cart = new ShoppingCart();
         for (int i = 0; i < 10; i++){
-            cart.addBook(new Book());
+            cart.addBookID(new Book().getId());
         }
         this.shoppingCartRepository.save(cart);
 

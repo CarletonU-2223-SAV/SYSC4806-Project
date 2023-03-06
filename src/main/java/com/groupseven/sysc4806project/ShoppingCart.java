@@ -2,8 +2,7 @@ package com.groupseven.sysc4806project;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Entity
@@ -11,10 +10,12 @@ public class ShoppingCart {
 
     private int id;
     private User customer;
-    private List<Book> books;
+
+    //holds <bookID, orderAmount>
+    private Map<Integer, Integer> books;
 
     public ShoppingCart() {
-        books = new ArrayList<>();
+        books = new HashMap<>();
     }
 
     @Id
@@ -27,8 +28,8 @@ public class ShoppingCart {
         return customer;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    public List<Book> getBooks() {
+    @ElementCollection(fetch = FetchType.EAGER)
+    public Map<Integer, Integer> getBooks() {
         return books;
     }
 
@@ -40,30 +41,45 @@ public class ShoppingCart {
         this.customer = customer;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Map<Integer, Integer> books) {
         this.books = books;
     }
 
-    public void addBook(Book book){
-        if (book != null){
-            this.books.add(book);
+    public Boolean addBookID(int bookId){
+        if (books.containsKey(bookId)){
+            return false;
+        }else{
+            books.put(bookId, 1);
+            return true;
         }
     }
 
-    public void removeBook(int id){
-        this.books.removeIf(book -> book.getId() == id);
-    }
-
-    public Book getBook(int id){
-        for (Book book: books){
-            if (book.getId() == id){
-                return book;
-            }
+    public Boolean removeBookID(int bookId){
+        if (books.containsKey(bookId)){
+            books.remove(bookId);
+            return true;
+        }else{
+            return false;
         }
-        return null;
     }
 
-    public void clearCart(){
+    public Boolean setOrderAmount(int orderAmount, int bookId){
+        if (books.containsKey(bookId)){
+            books.put(bookId, orderAmount);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Integer getOrderAmount(int bookId){
+        if(books.containsKey(bookId)){
+            return books.get(bookId);
+        }
+        return -1;
+    }
+
+    public void clear(){
         books.clear();
     }
 

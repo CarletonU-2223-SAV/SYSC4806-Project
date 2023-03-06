@@ -10,8 +10,6 @@ public class Book {
     private int id;
     private int inventory;
 
-    private int orderAmount;
-
     private String isbn, description, title, author, publisher;
 
     public Book() {
@@ -23,10 +21,6 @@ public class Book {
 
     public void setInventory(int inventory) {
         this.inventory = inventory;
-    }
-
-    public void setOrderAmount(int orderAmount) {
-        this.orderAmount = orderAmount;
     }
 
     public void setIsbn(String isbn) {
@@ -62,10 +56,6 @@ public class Book {
 
     public int getInventory() {
         return inventory;
-    }
-
-    public int getOrderAmount() {
-        return orderAmount;
     }
 
     public String getIsbn() {
