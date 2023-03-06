@@ -19,6 +19,8 @@ public class ShoppingCartTest {
     @Autowired
     private BookRepository bookRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
@@ -86,17 +88,15 @@ public class ShoppingCartTest {
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(cart, response.getBody());
+        assertEquals(cart.getId(), response.getBody().getId());
     }
 
     @Test
     public void testCreateCart(){
-        MultiValueMap<String, User> params = new LinkedMultiValueMap<>();
         User user = new User();
-        params.add("user", user);
-        ResponseEntity<Integer> response = restTemplate.postForEntity(
-                "/api/carts/",
-                params,
+        userRepository.save(user);
+        ResponseEntity<Integer> response = restTemplate.getForEntity(
+                "/api/carts/create/" + user.getId(),
                 Integer.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -104,7 +104,8 @@ public class ShoppingCartTest {
         assertTrue(response.getBody() > 0);
 
         ShoppingCart cart = shoppingCartRepository.findById(response.getBody()).orElseThrow();
-        assertEquals(user, cart.getCustomer());
+        user = userRepository.findById(user.getId()).orElseThrow();
+        assertEquals(user.getId(), cart.getCustomer().getId());
     }
 
     @Test
@@ -201,7 +202,7 @@ public class ShoppingCartTest {
         this.shoppingCartRepository.save(cart);
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/carts/" + cart.getId(),
+                "/api/carts/clear/" + cart.getId(),
                 HttpMethod.DELETE,
                 HttpEntity.EMPTY,
                 Boolean.class
@@ -216,8 +217,8 @@ public class ShoppingCartTest {
     @Test
     public void testDeleteCart(){
         ShoppingCart cart = new ShoppingCart();
-        int id = cart.getId();
         shoppingCartRepository.save(cart);
+        int id = cart.getId();
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
                 "/api/carts/" + id,

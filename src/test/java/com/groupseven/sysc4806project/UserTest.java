@@ -47,18 +47,18 @@ public class UserTest {
         userRepository.save(user);
 
         ResponseEntity<User> response = restTemplate.getForEntity(
-                "/api/users" + user.getId(),
+                "/api/users/" + user.getId(),
                 User.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(user, response.getBody());
+        assertEquals(user.getId(), response.getBody().getId());
     }
 
     @Test
     public void testCreateUser(){
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("user", "Kevin Smith");
+        params.add("name", "Kevin Smith");
         params.add("isAdmin", "true");
         ResponseEntity<Integer> response = restTemplate.postForEntity(
                 "/api/users",

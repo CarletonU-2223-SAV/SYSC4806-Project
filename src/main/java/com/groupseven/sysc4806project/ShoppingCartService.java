@@ -13,6 +13,8 @@ public class ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     public ShoppingCartService (ShoppingCartRepository shoppingCartRepository){
@@ -24,8 +26,10 @@ public class ShoppingCartService {
         return shoppingCartRepository.findById(cartId).orElse(null);
     }
 
-    @PostMapping("")
-    public Integer createCart(@RequestParam User user){
+    @GetMapping("/create/{userId}")
+    public Integer createCart(@PathVariable int userId){
+        User user = userRepository.findById(userId).orElse(null);
+        assert user != null;
         ShoppingCart cart = new ShoppingCart();
         cart.setCustomer(user);
         shoppingCartRepository.save(cart);
