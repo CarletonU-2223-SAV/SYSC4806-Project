@@ -58,6 +58,11 @@ public class BookstoreController {
         Optional<Book> added_book = Optional.ofNullable(this.bookService.get(book_id));
         Book book = added_book.get();
         model.addAttribute("book", book);
+        return "book-result";
+    }
+
+    @GetMapping("/transit-to-add-book")
+    public String transit() {
         return "add-edit";
     }
 }

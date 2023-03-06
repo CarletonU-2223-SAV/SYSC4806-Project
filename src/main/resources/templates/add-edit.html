@@ -10,16 +10,16 @@
 </head>
 <body>
   <div>
-    <form action="#" th:action="@{/home/add-book}" method="post">
+    <form action="/home/add-book" method="POST">
       <p>
-        <p>ISBN: <input type="text" name="isbn"/>
-        <p>Title: <input type="text" name="title"/>
-        <p>Description: <input type="text" name="description"/>
-        <p>Author: <input type="text" name="author"/>
-        <p>Publisher: <input type="text" name="publisher"/>
-        <p>Inventory: <input type="number" name="inventory"/>
-        <input type="submit" value="Add" />
-        <input type="reset" value="Reset" />
+        <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md"/>
+        <p>Title: <input type="text" name="title" class="border-2 rounded-md"/>
+        <p>Description: <input type="text" name="description" class="border-2 rounded-md"/>
+        <p>Author: <input type="text" name="author" class="border-2 rounded-md"/>
+        <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md"/>
+        <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md"/>
+        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Add</button>
+        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
       </p>
     </form>
   </div>
