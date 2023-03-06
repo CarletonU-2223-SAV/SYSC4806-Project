@@ -67,7 +67,7 @@ public class UserTest {
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertTrue(response.getBody() > 0);
+        assertTrue(response.getBody() > 0, String.valueOf(response.getBody()));
 
         User user = userRepository.findById(response.getBody()).orElseThrow();
         assertEquals("Kevin Smith", user.getName());
