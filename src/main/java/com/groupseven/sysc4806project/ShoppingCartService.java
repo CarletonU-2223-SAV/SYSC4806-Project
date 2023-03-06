@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/api/carts")
 public class ShoppingCartService {
 
     @Autowired
@@ -81,7 +81,7 @@ public class ShoppingCartService {
         return true;
     }
 
-    @DeleteMapping ("/{cartId}")
+    @DeleteMapping ("/clear/{cartId}")
     public Boolean clearCart(@PathVariable int cartId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         if (cart == null){

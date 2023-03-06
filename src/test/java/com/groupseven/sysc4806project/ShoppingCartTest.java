@@ -81,7 +81,7 @@ public class ShoppingCartTest {
         shoppingCartRepository.save(cart);
 
         ResponseEntity<ShoppingCart> response = restTemplate.getForEntity(
-                "/api/cart" + cart.getCart_ID(),
+                "/api/carts/" + cart.getCart_ID(),
                 ShoppingCart.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -95,7 +95,7 @@ public class ShoppingCartTest {
         User user = new User();
         params.add("user", user);
         ResponseEntity<Integer> response = restTemplate.postForEntity(
-                "/api/cart",
+                "/api/carts/",
                 params,
                 Integer.class
         );
@@ -116,7 +116,7 @@ public class ShoppingCartTest {
         shoppingCartRepository.save(cart);
 
         ResponseEntity<Book[]> response = restTemplate.getForEntity(
-                "/api/cart/" + cart.getCart_ID() + "/books",
+                "/api/carts/" + cart.getCart_ID() + "/books",
                 Book[].class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -135,7 +135,7 @@ public class ShoppingCartTest {
         bookRepository.save(book);
 
         ResponseEntity<Boolean> response = restTemplate.getForEntity(
-                "/api/cart/" + cart.getCart_ID() + "/" + book.getId(),
+                "/api/carts/" + cart.getCart_ID() + "/" + book.getId(),
                 Boolean.class
         );
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -155,7 +155,7 @@ public class ShoppingCartTest {
         shoppingCartRepository.save(cart);
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/cart/" + cart.getCart_ID() + "/" + book.getId(),
+                "/api/carts/" + cart.getCart_ID() + "/" + book.getId(),
                 HttpMethod.DELETE,
                 HttpEntity.EMPTY,
                 Boolean.class
@@ -180,7 +180,7 @@ public class ShoppingCartTest {
         params.add("orderAmount", 5);
 
         ResponseEntity<Boolean> response = restTemplate.postForEntity(
-                "/api/cart/" + cart.getCart_ID() + "/" + book.getId(),
+                "/api/carts/" + cart.getCart_ID() + "/" + book.getId(),
                 params,
                 Boolean.class
         );
@@ -200,7 +200,7 @@ public class ShoppingCartTest {
         shoppingCartRepository.save(cart);
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/cart/" + cart.getCart_ID(),
+                "/api/carts/" + cart.getCart_ID(),
                 HttpMethod.DELETE,
                 HttpEntity.EMPTY,
                 Boolean.class
@@ -219,7 +219,7 @@ public class ShoppingCartTest {
         shoppingCartRepository.save(cart);
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/cart/" + cart.getCart_ID(),
+                "/api/carts/" + cart.getCart_ID(),
                 HttpMethod.DELETE,
                 null,
                 Boolean.class
