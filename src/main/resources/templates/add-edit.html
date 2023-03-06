@@ -10,18 +10,28 @@
 </head>
 <body>
   <div>
-    <form action="/home/add-book" method="POST">
-      <p>
-        <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md"/>
-        <p>Title: <input type="text" name="title" class="border-2 rounded-md"/>
-        <p>Description: <input type="text" name="description" class="border-2 rounded-md"/>
-        <p>Author: <input type="text" name="author" class="border-2 rounded-md"/>
-        <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md"/>
-        <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md"/>
-        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Add</button>
-        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
-      </p>
+    <form th:unless="${book == null}" action="/home/edit-book" method="POST">
+      <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md" th:value="${book.getIsbn()}" disabled/>
+      <p>Title: <input type="text" name="title" class="border-2 rounded-md" th:value="${book.getTitle()}" disabled/>
+      <p>Description: <input type="text" name="description" class="border-2 rounded-md"/>
+      <p>Author: <input type="text" name="author" class="border-2 rounded-md" th:value="${book.getAuthor()}" disabled/>
+      <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md" th:value="${book.getPublisher()}" disabled/>
+      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md"/>
+      <p hidden="hidden">Book ID:<input type="hidden" name="book_id" class="border-2 rounded-md" th:value="${book.getId()}"/></p>
+      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Edit</button>
+      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
     </form>
+    <form th:if="${book == null}" action="/home/add-book" method="POST">
+      <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md"/>
+      <p>Title: <input type="text" name="title" class="border-2 rounded-md"/>
+      <p>Description: <input type="text" name="description" class="border-2 rounded-md"/>
+      <p>Author: <input type="text" name="author" class="border-2 rounded-md"/>
+      <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md"/>
+      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md"/>
+      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Add</button>
+      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
+    </form>
+
   </div>
 </body>
 </html>
