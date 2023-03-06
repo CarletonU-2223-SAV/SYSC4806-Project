@@ -65,15 +65,18 @@ public class ShoppingCartService {
     }
 
     @PostMapping("/{cartId}/{bookId}")
-    public Boolean changeBookInv(@PathVariable int cartId,
-                              @PathVariable int bookId,
-                              @RequestParam int newInvAmount){
+    public Boolean changeOrderAmount(@PathVariable int cartId,
+                                     @PathVariable int bookId,
+                                     @RequestParam int orderAmount){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         if (cart == null){
             return false;
         }
         Book book = cart.getBook(bookId);
-        book.setInventory(newInvAmount);
+        if (orderAmount > book.getInventory()){
+            return false;
+        }
+        book.setOrderAmount(orderAmount);
         shoppingCartRepository.save(cart);
         return true;
     }

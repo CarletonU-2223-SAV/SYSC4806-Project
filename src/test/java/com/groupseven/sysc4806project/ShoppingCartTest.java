@@ -169,15 +169,15 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void testChangeBookInv() {
+    public void testChangeOrderAmount() {
         ShoppingCart cart = new ShoppingCart();
         Book book = new Book();
-        book.setInventory(10);
+        book.setOrderAmount(10);
         cart.addBook(book);
         shoppingCartRepository.save(cart);
 
         MultiValueMap<String, Integer> params = new LinkedMultiValueMap<>();
-        params.add("newInvAmount", 5);
+        params.add("orderAmount", 5);
 
         ResponseEntity<Boolean> response = restTemplate.postForEntity(
                 "/api/cart/" + cart.getCart_ID() + "/" + book.getId(),
@@ -188,7 +188,7 @@ public class ShoppingCartTest {
         assertNotNull(response.getBody());
         assertTrue(response.getBody());
         cart = shoppingCartRepository.findById(cart.getCart_ID()).orElseThrow();
-        assertEquals(5, cart.getBook(book.getId()).getInventory());
+        assertEquals(5, cart.getBook(book.getId()).getOrderAmount());
     }
 
     @Test
