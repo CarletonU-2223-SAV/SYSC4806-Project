@@ -83,6 +83,10 @@
                                 <input name="id" type="hidden"th:value="${book.getId()}">
                                 <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Edit book</button>
                             </form>
+                            <form action="/home/delete-book" method="POST">
+                                <input name="id" type="hidden"th:value="${book.getId()}"/>
+                                <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Delete book</button>
+                            </form>
                         </div>
                     </td>
                 </tr>

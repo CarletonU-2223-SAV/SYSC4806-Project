@@ -10,26 +10,18 @@
 </head>
 <body>
   <div>
-    <form th:unless="${book == null}" action="/home/edit-book" method="POST">
-      <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md" th:value="${book.getIsbn()}" disabled/>
-      <p>Title: <input type="text" name="title" class="border-2 rounded-md" th:value="${book.getTitle()}" disabled/>
-      <p>Description: <input type="text" name="description" class="border-2 rounded-md" th:value="${book.getDescription()}"/>
-      <p>Author: <input type="text" name="author" class="border-2 rounded-md" th:value="${book.getAuthor()}" disabled/>
-      <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md" th:value="${book.getPublisher()}" disabled/>
-      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md" min="0" th:value="${book.getInventory()}"/>
-      <p hidden="hidden">Book ID:<textarea type="hidden" name="book_id" class="border-2 rounded-md" th:value="${book.getId()}"></textarea></p>
-      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Edit</button>
-      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
-    </form>
-    <form th:if="${book == null}" action="/home/add-book" method="POST">
-      <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md"/>
-      <p>Title: <input type="text" name="title" class="border-2 rounded-md"/>
-      <p>Description: <input type="text" name="description" class="border-2 rounded-md"/>
-      <p>Author: <input type="text" name="author" class="border-2 rounded-md"/>
-      <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md"/>
-      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md" min="0"/>
-      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Add</button>
-      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
+    <form th:action="${book} == null ? '/home/add-book' : '/home/edit-book'" method="POST">
+      <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getIsbn()}" th:disabled="${book} != null"/>
+      <p>Title: <input type="text" name="title" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getTitle()}" th:disabled="${book} != null"/>
+      <p>Description: <textarea type="text" name="description" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getDescription()}"></textarea>
+      <p>Author: <input type="text" name="author" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getAuthor()}" th:disabled="${book} != null"/>
+      <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getPublisher()}" th:disabled="${book} != null"/>
+      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md" min="0" th:value="${book} == null ? '' : ${book.getInventory()}"/>
+      <p hidden="hidden">Book ID:<input th:disabled="${book} == null" type="hidden" name="book_id" class="border-2 rounded-md" th:value="${book} == null ? null : ${book.getId()}">
+      <p>
+        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit"  th:text="${book == null} ? 'Add' : 'Edit'"></button>
+        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
+      </p>
     </form>
     <form action="/home" method="GET">
       <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Back</button>
