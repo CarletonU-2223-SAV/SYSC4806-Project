@@ -111,7 +111,7 @@ public class BookService {
         return true;
     }
 
-    @DeleteMapping("/{bookId}")
+    @PostMapping("/delete/{bookId}")
     public Boolean delete(@PathVariable Integer bookId) {
         Optional<Book> bookOptional = this.repo.findById(bookId);
         if (bookOptional.isEmpty()) {

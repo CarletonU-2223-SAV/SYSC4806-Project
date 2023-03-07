@@ -4,11 +4,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -39,4 +41,60 @@ public class BookstoreController {
         model.addAttribute("books", books);
         return "index";
     }
+
+    @PostMapping("/add-book")
+    public String add(
+            @RequestParam String isbn,
+            @RequestParam String title,
+            @RequestParam(defaultValue = "") String description,
+            @RequestParam String author,
+            @RequestParam String publisher,
+            @RequestParam(defaultValue = "0") Integer inventory,
+            @RequestParam(required = false) MultipartFile image
+    ) {
+        if (inventory < 0) {
+            inventory = 0;
+        }
+        this.bookService.create(isbn,title,description,author,publisher,inventory,image);
+        return "redirect:/home";
+    }
+
+    @PostMapping("/edit-book")
+    public String edit(
+            @RequestParam(required = false) String isbn,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) Integer inventory,
+            @RequestParam(required = false) MultipartFile image,
+            @RequestParam Integer book_id
+    ) {
+        if (inventory < 0) {
+            inventory = 0;
+        }
+        this.bookService.update(book_id,isbn,title,description,author,publisher,inventory,image);
+        return "redirect:/home";
+    }
+
+    @PostMapping("/delete-book")
+    public String delete(@RequestParam Integer id) {
+        this.bookService.delete(id);
+        return "redirect:/home";
+    }
+
+    @GetMapping("/transit-to-add-book")
+    public String transit_add(Model model) {
+        model.addAttribute("book", null);
+        return "add-edit";
+    }
+
+    @GetMapping("/transit-to-edit-book")
+    public String transit_edit(@RequestParam int id, Model model) {
+        Optional<Book> chosen_book = Optional.ofNullable(this.bookService.get(id));
+        Book book = chosen_book.get();
+        model.addAttribute("book", book);
+        return "add-edit";
+    }
 }
+

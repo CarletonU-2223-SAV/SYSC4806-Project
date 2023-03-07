@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.hamcrest.Matchers.containsString;
@@ -60,5 +61,25 @@ public class HttpTest {
         this.mockMvc.perform(get("/home?isbn=55555"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("My Book 2")));
+    }
+
+    @Test
+    public void testAddBookPage() throws Exception {
+        this.mockMvc.perform(post("/home/add-book?isbn=Test&title=Test title&description=Test description&author=Test author&publisher=Test publisher&inventory=4"))
+                .andExpect(status().isFound());
+    }
+
+    @Test
+    public void testEditBookPage() throws Exception {
+        Book test = new Book();
+        test.setTitle("Test");
+        test.setInventory(5);
+        test.setDescription("Test description");
+        test.setAuthor("Test author");
+        test.setIsbn("Test");
+        test.setPublisher("Test publisher");
+        when(bookService.list()).thenReturn(List.of(test));
+        this.mockMvc.perform(post("/home/edit-book?description=Test description2&inventory=5&book_id=1"))
+                .andExpect(status().isFound());
     }
 }

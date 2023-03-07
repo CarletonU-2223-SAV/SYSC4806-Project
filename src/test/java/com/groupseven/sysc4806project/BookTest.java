@@ -235,8 +235,8 @@ public class BookTest {
         int id = b.getId();
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/books/" + id,
-                HttpMethod.DELETE,
+                "/api/books/delete/" + id,
+                HttpMethod.POST,
                 null,
                 Boolean.class
         );
@@ -250,8 +250,8 @@ public class BookTest {
     @Test
     public void testDeleteMissingBook() {
         ResponseEntity<Boolean> response = restTemplate.exchange(
-                "/api/books/9999999",
-                HttpMethod.DELETE,
+                "/api/books/delete/9999999",
+                HttpMethod.POST,
                 null,
                 Boolean.class
         );
