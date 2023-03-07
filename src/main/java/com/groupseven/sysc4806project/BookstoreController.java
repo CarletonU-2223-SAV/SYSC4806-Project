@@ -51,22 +51,12 @@ public class BookstoreController {
             @RequestParam String publisher,
             @RequestParam(defaultValue = "0") Integer inventory,
             @RequestParam(required = false) MultipartFile image
-    ) throws Exception {
+    ) {
         if (inventory < 0) {
             inventory = 0;
         }
-        if(isbn == null) {
-            throw new Exception("Attribute isbn is missing!!!");
-        }else if (title == null) {
-            throw new Exception("Attribute title is missing!!!");
-        }else if (author == null) {
-            throw new Exception("Attribute author is missing!!!");
-        }else if (publisher == null) {
-            throw new Exception("Attribute publisher is missing!!!");
-        }else {
-            this.bookService.create(isbn,title,description,author,publisher,inventory,image);
-            return "redirect:/home";
-        }
+        this.bookService.create(isbn,title,description,author,publisher,inventory,image);
+        return "redirect:/home";
     }
 
     @PostMapping("/edit-book")
