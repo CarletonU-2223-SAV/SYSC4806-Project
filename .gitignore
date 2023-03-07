@@ -5,6 +5,7 @@ mvnw
 mvnw.cmd
 !**/src/main/**/target/
 !**/src/test/**/target/
+data.sqlite
 
 ### STS ###
 .apt_generated
