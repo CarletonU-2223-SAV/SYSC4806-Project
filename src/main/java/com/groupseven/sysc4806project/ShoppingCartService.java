@@ -22,12 +22,12 @@ public class ShoppingCartService {
     }
 
     @GetMapping("/{cartId}")
-    public ShoppingCart getCart(@PathVariable int cartId){
+    public ShoppingCart getCart(@PathVariable Integer cartId){
         return shoppingCartRepository.findById(cartId).orElse(null);
     }
 
     @GetMapping("/create/{userId}")
-    public Integer createCart(@PathVariable int userId){
+    public Integer createCart(@PathVariable Integer userId){
         User user = userRepository.findById(userId).orElse(null);
         if (user == null){
             //user not in repo
@@ -44,7 +44,7 @@ public class ShoppingCartService {
     }
 
     @GetMapping("/{cartId}/books")
-    public Map<Integer, Integer> listBooksInCart(@PathVariable int cartId){
+    public Map<Integer, Integer> listBooksInCart(@PathVariable Integer cartId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         if (cart == null){
             //cart not in repo
@@ -54,8 +54,8 @@ public class ShoppingCartService {
     }
 
     @GetMapping("/{cartId}/{bookId}")
-    public Boolean addBookToCart(@PathVariable int cartId,
-                                 @PathVariable int bookId
+    public Boolean addBookToCart(@PathVariable Integer cartId,
+                                 @PathVariable Integer bookId
                         ){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
@@ -73,8 +73,8 @@ public class ShoppingCartService {
     }
 
     @DeleteMapping("/{cartId}/{bookId}")
-    public Boolean removeBookFromCart(@PathVariable int cartId,
-                                      @PathVariable int bookId){
+    public Boolean removeBookFromCart(@PathVariable Integer cartId,
+                                      @PathVariable Integer bookId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
         if (cart == null || book == null){
@@ -90,9 +90,9 @@ public class ShoppingCartService {
     }
 
     @PostMapping("/{cartId}/{bookId}")
-    public Boolean changeOrderAmount(@PathVariable int cartId,
-                                     @PathVariable int bookId,
-                                     @RequestParam int orderAmount){
+    public Boolean changeOrderAmount(@PathVariable Integer cartId,
+                                     @PathVariable Integer bookId,
+                                     @RequestParam Integer orderAmount){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
         if (cart == null || book == null || orderAmount > book.getInventory()){
@@ -107,7 +107,7 @@ public class ShoppingCartService {
     }
 
     @DeleteMapping ("/clear/{cartId}")
-    public Boolean clearCart(@PathVariable int cartId){
+    public Boolean clearCart(@PathVariable Integer cartId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         if (cart == null){
             return false;
@@ -118,7 +118,7 @@ public class ShoppingCartService {
     }
 
     @DeleteMapping ("/{cartId}")
-    public Boolean deleteCart(@PathVariable int cartId){
+    public Boolean deleteCart(@PathVariable Integer cartId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
         if (cart == null){
             return false;
