@@ -13,10 +13,10 @@
     <form th:unless="${book == null}" action="/home/edit-book" method="POST">
       <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md" th:value="${book.getIsbn()}" disabled/>
       <p>Title: <input type="text" name="title" class="border-2 rounded-md" th:value="${book.getTitle()}" disabled/>
-      <p>Description: <input type="text" name="description" class="border-2 rounded-md"/>
+      <p>Description: <input type="text" name="description" class="border-2 rounded-md" th:value="${book.getDescription()}"/>
       <p>Author: <input type="text" name="author" class="border-2 rounded-md" th:value="${book.getAuthor()}" disabled/>
       <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md" th:value="${book.getPublisher()}" disabled/>
-      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md" min="0"/>
+      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md" min="0" th:value="${book.getInventory()}"/>
       <p hidden="hidden">Book ID:<textarea type="hidden" name="book_id" class="border-2 rounded-md" th:value="${book.getId()}"></textarea></p>
       <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Edit</button>
       <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
