@@ -51,18 +51,43 @@ public class BookstoreController {
             @RequestParam(defaultValue = "") String author,
             @RequestParam(defaultValue = "") String publisher,
             @RequestParam(defaultValue = "") Integer inventory,
-            @RequestParam(required = false) MultipartFile image,
-            Model model
+            @RequestParam(required = false) MultipartFile image
     ) {
-        int book_id = this.bookService.create(isbn,title,description,author,publisher,inventory,image);
-        Optional<Book> added_book = Optional.ofNullable(this.bookService.get(book_id));
-        Book book = added_book.get();
-        model.addAttribute("book", book);
-        return "book-result";
+        if (inventory < 0) {
+            inventory = 0;
+        }
+        this.bookService.create(isbn,title,description,author,publisher,inventory,image);
+        return "redirect:/home";
+    }
+
+    @PostMapping("/edit-book")
+    public String edit(
+            @RequestParam(required = false) String isbn,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) Integer inventory,
+            @RequestParam(required = false) MultipartFile image,
+            @RequestParam Integer book_id
+    ) {
+        if (inventory < 0) {
+            inventory = 0;
+        }
+        this.bookService.update(book_id,isbn,title,description,author,publisher,inventory,image);
+        return "redirect:/home";
     }
 
     @GetMapping("/transit-to-add-book")
-    public String transit() {
+    public String transit_add() {
+        return "add-edit";
+    }
+
+    @GetMapping("/transit-to-edit-book")
+    public String transit_edit(@RequestParam int id, Model model) {
+        Optional<Book> chosen_book = Optional.ofNullable(this.bookService.get(id));
+        Book book = chosen_book.get();
+        model.addAttribute("book", book);
         return "add-edit";
     }
 }

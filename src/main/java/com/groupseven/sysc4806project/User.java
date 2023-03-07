@@ -1,11 +1,9 @@
 package com.groupseven.sysc4806project;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
     private int user_ID;
     private boolean isAdmin;
