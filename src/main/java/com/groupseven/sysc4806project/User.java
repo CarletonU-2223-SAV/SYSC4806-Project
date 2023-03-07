@@ -5,22 +5,21 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-    private int user_ID;
+    private int id;
     private boolean isAdmin;
     private String name;
-    private ShoppingCart cart;
 
     public User() {
     }
 
     @Id
     @GeneratedValue
-    public int getUser_ID() {
-        return user_ID;
+    public int getId() {
+        return id;
     }
 
-    public void setUser_ID(int user_ID) {
-        this.user_ID = user_ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isAdmin() {
@@ -37,14 +36,5 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @OneToOne
-    public ShoppingCart getCart() {
-        return cart;
-    }
-
-    public void setCart(ShoppingCart cart) {
-        this.cart = cart;
     }
 }
