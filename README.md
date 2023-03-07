@@ -20,6 +20,15 @@ Chosen topic: Amazin Bookstore & FaaS, Microservices, Amazon Lambda
 - Group Presentation: March 26 2023
 - Milestone 3: April 5 2023
 
+### Team members
+- Phuc La (101107588)
+- Nicolas Tuttle (101105699)
+- Robell Gabriel (101108508)
+
+#### How to run the project
+1. Package Maven
+2. Run Sysc4806ProjectApplication.class
+
 #### Milestone 1
 
 In milestone 1, our team built the framework of the Amazin BookStore with many features implemented. Features created in this milestone: 
