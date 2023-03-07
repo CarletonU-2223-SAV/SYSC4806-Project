@@ -16,8 +16,8 @@
       <p>Description: <input type="text" name="description" class="border-2 rounded-md"/>
       <p>Author: <input type="text" name="author" class="border-2 rounded-md" th:value="${book.getAuthor()}" disabled/>
       <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md" th:value="${book.getPublisher()}" disabled/>
-      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md"/>
-      <p hidden="hidden">Book ID:<input type="hidden" name="book_id" class="border-2 rounded-md" th:value="${book.getId()}"/></p>
+      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md" min="0"/>
+      <p hidden="hidden">Book ID:<textarea type="hidden" name="book_id" class="border-2 rounded-md" th:value="${book.getId()}"></textarea></p>
       <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Edit</button>
       <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
     </form>
@@ -27,9 +27,12 @@
       <p>Description: <input type="text" name="description" class="border-2 rounded-md"/>
       <p>Author: <input type="text" name="author" class="border-2 rounded-md"/>
       <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md"/>
-      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md"/>
+      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md" min="0"/>
       <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Add</button>
       <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
+    </form>
+    <form action="/home" method="GET">
+      <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Back</button>
     </form>
   </div>
 </body>

@@ -45,19 +45,29 @@ public class BookstoreController {
 
     @PostMapping("/add-book")
     public String add(
-            @RequestParam(defaultValue = "") String isbn,
-            @RequestParam(defaultValue = "") String title,
+            @RequestParam String isbn,
+            @RequestParam String title,
             @RequestParam(defaultValue = "") String description,
-            @RequestParam(defaultValue = "") String author,
-            @RequestParam(defaultValue = "") String publisher,
-            @RequestParam(defaultValue = "") Integer inventory,
+            @RequestParam String author,
+            @RequestParam String publisher,
+            @RequestParam(defaultValue = "0") Integer inventory,
             @RequestParam(required = false) MultipartFile image
-    ) {
+    ) throws Exception {
         if (inventory < 0) {
             inventory = 0;
         }
-        this.bookService.create(isbn,title,description,author,publisher,inventory,image);
-        return "redirect:/home";
+        if(isbn == null) {
+            throw new Exception("Attribute isbn is missing!!!");
+        }else if (title == null) {
+            throw new Exception("Attribute title is missing!!!");
+        }else if (author == null) {
+            throw new Exception("Attribute author is missing!!!");
+        }else if (publisher == null) {
+            throw new Exception("Attribute publisher is missing!!!");
+        }else {
+            this.bookService.create(isbn,title,description,author,publisher,inventory,image);
+            return "redirect:/home";
+        }
     }
 
     @PostMapping("/edit-book")
