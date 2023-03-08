@@ -12,7 +12,10 @@
         <a href="/home">Amazin Bookstore</a>
       </h1>
       <div>
-        <a class="text-l font-bold text-white">Cart</a>
+          <form action="/cart" method="GET">
+              <input name="cartId" type="hidden">
+              <button class="text-l font-bold text-white">Cart</button>
+          </form>
       </div>
     </div>
   </div>

@@ -75,19 +75,20 @@
                             <p class="text-red-600">Out of stock</p>
                         </div>
                         <div th:if="${book.getInventory() > 0}">
-                            <select class="p-2">
-                                <option th:each="i : ${#numbers.sequence(1, book.getInventory())}" th:text="${i}" />
-                            </select>
-                            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Add to cart</button>
-                            <form action="/home/transit-to-edit-book" method="GET">
-                                <input name="id" type="hidden"th:value="${book.getId()}">
-                                <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Edit book</button>
-                            </form>
-                            <form action="/home/delete-book" method="POST">
-                                <input name="id" type="hidden"th:value="${book.getId()}"/>
-                                <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Delete book</button>
+                            <form action="/cart/add" method="POST">
+                                <input name="bookId" type="hidden"th:value="${book.getId()}">
+                                <input name="cartId" type="hidden">
+                                <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Add to cart</button>
                             </form>
                         </div>
+                        <form action="/home/transit-to-edit-book" method="GET">
+                            <input name="id" type="hidden"th:value="${book.getId()}">
+                            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Edit book</button>
+                        </form>
+                        <form action="/home/delete-book" method="POST">
+                            <input name="id" type="hidden"th:value="${book.getId()}"/>
+                            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Delete book</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
