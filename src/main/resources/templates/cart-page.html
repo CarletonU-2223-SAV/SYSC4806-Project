@@ -9,10 +9,10 @@
 </head>
 <body>
     <!-- Include header at top of page -->
-    <div th:insert="~{header :: CartHeader}"></div>
+    <div th:insert="~{header :: header}"></div>
 
     <!-- Cart table for books -->
-    <div>
+    <div class="mx-4">
         <table th:unless="${books == null || books.isEmpty()}" class="w-full">
             <thead>
             <tr>
@@ -53,7 +53,7 @@
             </tr>
             </tbody>
         </table>
-        <p th:if="${books == null || books.isEmpty()}">Cart is Empty</p>
+        <p class="ml-4 my-4" th:if="${books == null || books.isEmpty()}">Cart is Empty</p>
         <div class="flex">
             <form action="/cart/clear" method="POST">
                 <input name="cartId" type="hidden"th:value="${cartId}">
