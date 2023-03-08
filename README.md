@@ -39,8 +39,8 @@ In milestone 1, our team built the framework of the Amazin BookStore with many f
 - Delete book from the store page:
   - Bookstore owner or admin can delete a book from the store page, which completely removes it from the system.
 - Adding books into shopping cart
-  - Users can add book into their respective online shopping cart, and the book's inventory will decrease accordingly based on the number of books that the user added into their cart.
-  - Naturally, the number of books that the user add to cart cannot exceed the inventory.
+  - Users can add book into their respective online shopping cart.
+  - Naturally, the number of books that the user add to cart cannot exceed the number of books in inventory.
 - Searching for book(s) based on ISBN, Publisher, Author and Title
   - All the searching is done with case-insensitive contains logic.
   - The only exception is the ISBN since it is unique for each book.
