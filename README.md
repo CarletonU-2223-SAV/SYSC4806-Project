@@ -19,3 +19,42 @@ Chosen topic: Amazin Bookstore & FaaS, Microservices, Amazon Lambda
 - Milestone 2: March 22 2023
 - Group Presentation: March 26 2023
 - Milestone 3: April 5 2023
+
+### Team members
+- Phuc La (101107588)
+- Nicolas Tuttle (101105699)
+- Robell Gabriel (101108508)
+
+#### How to run the project
+1. Package Maven
+2. Run Sysc4806ProjectApplication.class
+
+#### Milestone 1
+
+In milestone 1, our team built the framework of the Amazin BookStore with many features implemented. Features created in this milestone: 
+- Create new book for the store (upload new book to the store):
+  - Bookstore owner or admin can add new book into the store.
+- Edit book (update book information such as description and inventory):
+  - Bookstore owner or admin can edit the information of the pre-existing book in the store by changing the description or update inventory manually.
+- Delete book from the store page:
+  - Bookstore owner or admin can delete a book from the store page, which completely removes it from the system.
+- Adding books into shopping cart
+  - Users can add book into their respective online shopping cart.
+  - Naturally, the number of books that the user add to cart cannot exceed the number of books in inventory.
+- Searching for book(s) based on ISBN, Publisher, Author and Title
+  - All the searching is done with case-insensitive contains logic.
+  - The only exception is the ISBN since it is unique for each book.
+
+The class diagram for this milestone is as follows:
+
+![Class Diagram](doc/class_diagram.png)
+
+The database schema used for the Amazin Bookstore system is as follows:
+
+![Database Schema](doc/database_schema.png)
+
+The team's plan for the next milestone is:
+- Implement the Checkout feature
+- Adding recommendation purchase feature based on what the user purchased in the past
+- Implement the features in the bookstore using the AWS Lambda function
+- Create and change active users
