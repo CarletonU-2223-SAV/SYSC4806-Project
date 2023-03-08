@@ -68,12 +68,13 @@ public class BookstoreController {
             @RequestParam(required = false) String publisher,
             @RequestParam(required = false) Integer inventory,
             @RequestParam(required = false) MultipartFile image,
+            @RequestParam(required = false) Boolean removeImage,
             @RequestParam Integer book_id
     ) {
         if (inventory < 0) {
             inventory = 0;
         }
-        this.bookService.update(book_id,isbn,title,description,author,publisher,inventory,image);
+        this.bookService.update(book_id,isbn,title,description,author,publisher,inventory,image, removeImage);
         return "redirect:/home";
     }
 
