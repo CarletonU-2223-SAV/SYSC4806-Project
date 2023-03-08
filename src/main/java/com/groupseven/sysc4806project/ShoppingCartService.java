@@ -21,6 +21,21 @@ public class ShoppingCartService {
         this.userRepository = userRepository;
     }
 
+    public Integer getLowestID(){
+        ShoppingCart shoppingCart = null;
+        for (ShoppingCart currentCart : shoppingCartRepository.findAll()){
+            if (shoppingCart == null || currentCart.getId() < shoppingCart.getId()){
+                shoppingCart = currentCart;
+            }
+        }
+        if (shoppingCart == null){
+            User user = new User();
+            userRepository.save(user);
+            return createCart(user.getId());
+        }
+        return shoppingCart.getId();
+    }
+
     @GetMapping("/{cartId}")
     public ShoppingCart getCart(@PathVariable Integer cartId){
         return shoppingCartRepository.findById(cartId).orElse(null);

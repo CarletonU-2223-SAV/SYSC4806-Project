@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Amazin Bookstore</title>
-    <script src="change-order-amount.js"></script>
 
     <!-- Use Tailwind for CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,26 +27,24 @@
             <tbody class="text-center">
             <tr th:each="book : ${books.keySet()}">
                 <td class="w-16 h-16">
-                    <a>
-                        <img th:src="${book.getImageUrl()}">
-                    </a>
+                    <img th:src="${book.getImageUrl()}">
                 </td>
                 <td>
-                    <a th:text="${book.getIsbn()}" />
+                    <p th:text="${book.getIsbn()}" />
                 </td>
                 <td>
-                    <a th:text="${book.getTitle()}" />
+                    <p th:text="${book.getTitle()}" />
                 </td>
                 <td>
-                    <a th:text="${books.get(book)}" />
-                    <form action="/cart/changeOrdAmo" id="changeOrderForm" method="POST">
+                    <form action="/cart/changeOrdAmo" method="POST">
                         <input name="cartId" type="hidden"th:value="${cartId}">
                         <input name="bookId" type="hidden"th:value="${book.getId()}">
                         <input name="orderAmount" type="number" id="orderAmount" min="0" th:max="${book.getInventory()}" th:value="${books.get(book)}">
+                        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Update</button>
                     </form>
                 </td>
                 <td>
-                    <form action="/cart/remove" method="DELETE">
+                    <form action="/cart/remove" method="POST">
                         <input name="cartId" type="hidden"th:value="${cartId}">
                         <input name="bookId" type="hidden"th:value="${book.getId()}">
                         <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Remove</button>
@@ -55,15 +52,15 @@
                 </td>
             </tr>
             </tbody>
-            <div>
-                <form action="/cart/clear" method="DELETE">
-                    <input name="cartId" type="hidden"th:value="${cartId}">
-                    <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Clear cart</button>
-                </form>
-                <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Checkout</button>
-            </div>
         </table>
         <p th:if="${books == null || books.isEmpty()}">Cart is Empty</p>
+        <div class="flex">
+            <form action="/cart/clear" method="POST">
+                <input name="cartId" type="hidden"th:value="${cartId}">
+                <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Clear cart</button>
+            </form>
+            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Checkout</button>
+        </div>
     </div>
 </body>
 </html>

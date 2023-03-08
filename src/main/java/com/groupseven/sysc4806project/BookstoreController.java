@@ -1,5 +1,7 @@
 package com.groupseven.sysc4806project;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,8 +20,13 @@ import java.util.stream.Collectors;
 public class BookstoreController {
     private final BookService bookService;
 
+    //temp until user screen added
+    private final ShoppingCartService shoppingCartService;
+
+
     @Autowired
-    public BookstoreController(BookService bookService) {
+    public BookstoreController(BookService bookService, ShoppingCartService shoppingCartService) {
+        this.shoppingCartService = shoppingCartService;
         this.bookService = bookService;
     }
 
@@ -29,8 +36,11 @@ public class BookstoreController {
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "") String author,
             @RequestParam(defaultValue = "") String publisher,
+            HttpServletResponse response,
             Model model
     ) {
+        Cookie springCookie = new Cookie("cartId", String.valueOf(shoppingCartService.getLowestID()));
+        response.addCookie(springCookie);
         List<Book> books = this.bookService.list().stream()
             .filter(book -> (
                 (isbn.equals("") || book.getIsbn().equals(isbn))
