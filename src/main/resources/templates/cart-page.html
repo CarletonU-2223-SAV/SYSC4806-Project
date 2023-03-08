@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Amazin Bookstore</title>
+    <script src="change-order-amount.js"></script>
 
     <!-- Use Tailwind for CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="change-order-amount.js"></script>
 </head>
 <body>
     <!-- Include header at top of page -->
@@ -43,7 +43,7 @@
                     <form action="/cart/changeOrdAmo" id="changeOrderForm" method="POST">
                         <input name="cartId" type="hidden"th:value="${cartId}">
                         <input name="bookId" type="hidden"th:value="${book.getId()}">
-                        <input name="orderAmount" type="number" id="orderAmount"th:value="${books.get(book)}">
+                        <input name="orderAmount" type="number" id="orderAmount" min="0" th:max="${book.getInventory()}" th:value="${books.get(book)}">
                     </form>
                 </td>
                 <td>

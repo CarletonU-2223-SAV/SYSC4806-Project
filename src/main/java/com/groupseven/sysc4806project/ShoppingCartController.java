@@ -23,40 +23,22 @@ public class ShoppingCartController {
     }
 
     @GetMapping("")
-    public String cart(@RequestParam(defaultValue = "0") Integer cartId,
-                       @RequestParam(defaultValue = "0") Integer userId,
+    public String cart(@RequestParam() Integer cartId,
                        Model model){
-        int newUserId = userId;
-        int newCartId = cartId;
-        if (userService.getUser(userId) == null){
-            newUserId = userService.createUser("John Doe", true);
-        }
-        if (shoppingCartService.getCart(cartId) == null){
-            newCartId = shoppingCartService.createCart(newUserId);
-        }
-        Map<Integer, Integer> bookIds = shoppingCartService.listBooksInCart(newCartId);
+        Map<Integer, Integer> bookIds = shoppingCartService.listBooksInCart(cartId);
         Map<Book, Integer> books = new HashMap<>();
         for (int id : bookIds.keySet()){
             books.put(bookService.get(id), bookIds.get(id));
         }
         model.addAttribute("books", books);
-        model.addAttribute("cartId", newCartId);
-        model.addAttribute("userId", userId);
+        model.addAttribute("cartId", cartId);
         return "cart-page";
     }
 
     @PostMapping("/add")
-    public String addBook(@RequestParam(defaultValue = "0") Integer cartId,
+    public String addBook(@RequestParam Integer cartId,
                           @RequestParam Integer bookId){
-        int userId = 0;
-        int newCartId = cartId;
-        if (userService.getUser(userId) == null){
-            userId = userService.createUser("John Doe", true);
-        }
-        if (shoppingCartService.getCart(cartId) == null){
-            newCartId = shoppingCartService.createCart(userId);
-        }
-        shoppingCartService.addBookToCart(newCartId, bookId);
+        shoppingCartService.addBookToCart(cartId, bookId);
         return "redirect:/cart";
     }
 
@@ -80,5 +62,4 @@ public class ShoppingCartController {
         shoppingCartService.changeOrderAmount(cartId, bookId, orderAmount);
         return "redirect:/cart";
     }
-
 }
