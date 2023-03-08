@@ -17,16 +17,16 @@ public class ImageService {
     public static final File DEFAULT_COVER = new File(IMAGE_DIR + "default.png");
 
     public boolean coverExists(int bookId) {
-        Path imagePath = Paths.get(IMAGE_DIR + bookId + ".png");
+        Path imagePath = Paths.get(IMAGE_DIR + bookId);
         return Files.exists(imagePath);
     }
 
     public File getImageFile(int bookId) {
-        return new File(IMAGE_DIR + bookId + ".png");
+        return new File(IMAGE_DIR + bookId);
     }
 
     public boolean writeImage(int bookId, MultipartFile image) {
-        Path savePath = Paths.get(IMAGE_DIR + bookId + ".png");
+        Path savePath = Paths.get(IMAGE_DIR + bookId);
 
         try (InputStream is = image.getInputStream()) {
             Files.copy(is, savePath, StandardCopyOption.REPLACE_EXISTING);
@@ -41,7 +41,7 @@ public class ImageService {
     public boolean removeImage(int bookId) {
         if (coverExists(bookId)) {
             try {
-                Path savePath = Paths.get(IMAGE_DIR + bookId + ".png");
+                Path savePath = Paths.get(IMAGE_DIR + bookId);
                 Files.delete(savePath);
             } catch (IOException e) {
                 e.printStackTrace();

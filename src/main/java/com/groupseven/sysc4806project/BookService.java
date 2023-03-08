@@ -52,7 +52,7 @@ public class BookService {
 
         this.repo.save(newBook);
 
-        if (image != null) {
+        if (image != null && !image.isEmpty()) {
             imageService.writeImage(newBook.getId(), image);
         }
 
@@ -68,7 +68,8 @@ public class BookService {
         @RequestParam(required = false) String author,
         @RequestParam(required = false) String publisher,
         @RequestParam(required = false) Integer inventory,
-        @RequestParam(required = false) MultipartFile image
+        @RequestParam(required = false) MultipartFile image,
+        @RequestParam(required = false) Boolean removeImage
     ) {
         Optional<Book> bookOptional = this.repo.findById(bookId);
         if (bookOptional.isEmpty()) {
@@ -104,7 +105,11 @@ public class BookService {
 
         this.repo.save(book);
 
-        if (image != null) {
+        if (removeImage) {
+            return imageService.removeImage(book.getId());
+        }
+
+        if (image != null && !image.isEmpty()) {
             return imageService.writeImage(book.getId(), image);
         }
 
