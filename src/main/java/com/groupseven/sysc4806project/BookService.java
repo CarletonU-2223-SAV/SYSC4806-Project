@@ -105,7 +105,7 @@ public class BookService {
 
         this.repo.save(book);
 
-        if (removeImage) {
+        if (removeImage != null && removeImage) {
             return imageService.removeImage(book.getId());
         }
 
