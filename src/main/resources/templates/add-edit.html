@@ -9,16 +9,24 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <div>
-    <form th:action="${book} == null ? '/home/add-book' : '/home/edit-book'" method="POST">
-      <p>ISBN: <input type="text" name="isbn" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getIsbn()}" th:disabled="${book} != null"/>
-      <p>Title: <input type="text" name="title" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getTitle()}" th:disabled="${book} != null"/>
-      <p>Description: <textarea type="text" name="description" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getDescription()}"></textarea>
-      <p>Author: <input type="text" name="author" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getAuthor()}" th:disabled="${book} != null"/>
-      <p>Publisher: <input type="text" name="publisher" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getPublisher()}" th:disabled="${book} != null"/>
-      <p>Inventory: <input type="number" name="inventory" class="border-2 rounded-md" min="0" th:value="${book} == null ? '' : ${book.getInventory()}"/>
-      <p hidden="hidden">Book ID:<input th:disabled="${book} == null" type="hidden" name="book_id" class="border-2 rounded-md" th:value="${book} == null ? null : ${book.getId()}">
-      <p>
+  <!-- Include header at top of page -->
+  <div th:insert="~{header :: header}"></div>
+  <div class="ml-2">
+    <form th:action="${book} == null ? '/home/add-book' : '/home/edit-book'" method="POST" enctype="multipart/form-data" class="grid grid-cols-[min-content_1fr] w-1/2 my-2 gap-0.5">
+      <p>ISBN: </p><input type="text" name="isbn" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getIsbn()}" th:disabled="${book} != null"/>
+      <p>Title: </p><input type="text" name="title" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getTitle()}" th:disabled="${book} != null"/>
+      <p>Description: </p><textarea type="text" name="description" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getDescription()}"></textarea>
+      <p>Author: </p><input type="text" name="author" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getAuthor()}" th:disabled="${book} != null"/>
+      <p>Publisher: </p><input type="text" name="publisher" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getPublisher()}" th:disabled="${book} != null"/>
+      <p>Inventory: </p><input type="number" name="inventory" class="border-2 rounded-md" min="0" th:value="${book} == null ? '' : ${book.getInventory()}"/>
+      <p>Image: </p>
+      <div>
+        <input type="file" name="image" accept="image/*" class="cursor-pointer file:ease-in-out file:duration-300 file:hover:bg-blue-800 file:hover:text-white file:bg-white file:border-blue-800 file:border-2 file:rounded-md file:px-4 file:py-1.5">
+        <span th:unless="${book} == null"><input id="remove-image" type="checkbox" name="removeImage"><label for="remove-image" class="pl-2">Remove</label></span>
+      </div>
+      <input th:disabled="${book} == null" type="hidden" name="book_id" class="border-2 rounded-md" th:value="${book} == null ? null : ${book.getId()}">
+
+      <p class="col-span-2">
         <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit"  th:text="${book == null} ? 'Add' : 'Edit'"></button>
         <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
       </p>
