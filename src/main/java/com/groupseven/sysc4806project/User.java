@@ -2,12 +2,16 @@ package com.groupseven.sysc4806project;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
     private int id;
     private boolean isAdmin;
     private String name;
+
+    private ShoppingCart cart;
 
     public User() {
     }
@@ -36,5 +40,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    public ShoppingCart getCart() {
+        return cart;
+    }
+
+    public void setCart(ShoppingCart cart) {
+        this.cart = cart;
     }
 }

@@ -9,7 +9,6 @@ import java.util.*;
 public class ShoppingCart {
 
     private int id;
-    private User customer;
 
     //holds <bookID, orderAmount>
     private Map<Integer, Integer> books;
@@ -23,10 +22,6 @@ public class ShoppingCart {
     public int getId() {
         return id;
     }
-    @OneToOne
-    public User getCustomer() {
-        return customer;
-    }
 
     @ElementCollection(fetch = FetchType.EAGER)
     public Map<Integer, Integer> getBooks() {
@@ -35,10 +30,6 @@ public class ShoppingCart {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setCustomer(User customer) {
-        this.customer = customer;
     }
 
     public void setBooks(Map<Integer, Integer> books) {

@@ -28,7 +28,7 @@ public class HttpTest {
     private BookService bookService;
 
     @MockBean
-    private ShoppingCartService shoppingCartService;
+    private UserService userService;
 
     @Test
     public void testHomePageNoBooks() throws Exception {
@@ -90,53 +90,53 @@ public class HttpTest {
 
     @Test
     public void testBooksInCart() throws Exception {
-        Integer cartId = 1;
+        Integer userId = 1;
         Map<Integer, Integer> bookIds = Map.of(1,2,3,4);
-        when(shoppingCartService.listBooksInCart(cartId)).thenReturn(bookIds);
+        when(userService.listBooksInCart(userId)).thenReturn(bookIds);
         mockMvc.perform(get("/cart")
-                        .cookie(new Cookie("cartId", cartId.toString())))
+                        .param("userId", userId.toString()))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testAddBookToCart() throws Exception{
-        Integer cartId = 1;
+        Integer userId = 1;
         Integer bookId = 2;
-        when(shoppingCartService.addBookToCart(cartId, bookId)).thenReturn(true);
+        when(userService.addBookToCart(userId, bookId)).thenReturn(true);
         mockMvc.perform(post("/cart/add")
-                        .cookie(new Cookie("cartId", cartId.toString()))
+                        .param("userId", userId.toString())
                         .param("bookId", bookId.toString()))
                 .andExpect(status().isFound());
     }
 
     @Test
     public void testRemoveBookFromCart() throws Exception{
-        Integer cartId = 1;
+        Integer userId = 1;
         Integer bookId = 2;
-        when(shoppingCartService.removeBookFromCart(cartId, bookId)).thenReturn(true);
+        when(userService.removeBookFromCart(userId, bookId)).thenReturn(true);
         mockMvc.perform(post("/cart/remove")
-                        .param("cartId", cartId.toString())
+                        .param("userId", userId.toString())
                         .param("bookId", bookId.toString()))
                 .andExpect(status().isFound());
     }
 
     @Test
     public void testClearCart() throws Exception{
-        Integer cartId = 1;
-        when(shoppingCartService.clearCart(cartId)).thenReturn(true);
+        Integer userId = 1;
+        when(userService.clearCart(userId)).thenReturn(true);
         mockMvc.perform(post("/cart/clear")
-                        .param("cartId", cartId.toString()))
+                        .param("userId", userId.toString()))
                 .andExpect(status().isFound());
     }
 
     @Test
     public void testChangeOrderAmountInCart() throws Exception{
-        Integer cartId = 1;
+        Integer userId = 1;
         Integer bookId = 2;
         Integer orderAmount = 3;
-        when(shoppingCartService.changeOrderAmount(cartId, bookId, orderAmount)).thenReturn(true);
+        when(userService.changeOrderAmount(userId, bookId, orderAmount)).thenReturn(true);
         mockMvc.perform(post("/cart/changeOrdAmo")
-                        .param("cartId", cartId.toString())
+                        .param("userId", userId.toString())
                         .param("bookId", bookId.toString())
                         .param("orderAmount", orderAmount.toString()))
                 .andExpect(status().isFound());
