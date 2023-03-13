@@ -2,8 +2,6 @@ package com.groupseven.sysc4806project;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "users")
 public class User {

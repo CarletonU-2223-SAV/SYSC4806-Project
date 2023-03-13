@@ -4,25 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
-import org.springframework.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest()
 public class ShoppingCartTest {
-    @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
-    @Autowired
-    private BookRepository bookRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @Test
     public void set_getCart_ID() {
