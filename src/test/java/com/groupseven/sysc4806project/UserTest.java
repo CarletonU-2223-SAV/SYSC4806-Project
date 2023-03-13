@@ -50,6 +50,14 @@ public class UserTest {
     }
 
     @Test
+    public void set_getCart() {
+        User user = new User();
+        ShoppingCart cart = new ShoppingCart();
+        user.setCart(cart);
+        assertEquals(user.getId(), user.getCart().getId());
+    }
+
+    @Test
     public void testGetUser(){
         User user = new User();
         userRepository.save(user);
