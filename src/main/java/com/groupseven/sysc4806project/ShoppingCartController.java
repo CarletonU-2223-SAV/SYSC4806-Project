@@ -21,7 +21,7 @@ public class ShoppingCartController {
     }
 
     @GetMapping("")
-    public String cart(@RequestParam Integer userId,
+    public String cart(@CookieValue Integer userId,
                        Model model){
         Map<Integer, Integer> bookIds = userService.listBooksInCart(userId);
         Map<Book, Integer> books = new TreeMap<>(Comparator.comparing(Book::getTitle));
@@ -38,7 +38,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/add")
-    public String addBook(@RequestParam Integer userId,
+    public String addBook(@CookieValue Integer userId,
                           @RequestParam Integer bookId){
         userService.addBookToCart(userId, bookId);
         return "redirect:/cart";

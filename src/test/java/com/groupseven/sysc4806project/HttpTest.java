@@ -1,5 +1,6 @@
 package com.groupseven.sysc4806project;
 
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -93,7 +94,7 @@ public class HttpTest {
         Map<Integer, Integer> bookIds = Map.of(1,2,3,4);
         when(userService.listBooksInCart(userId)).thenReturn(bookIds);
         mockMvc.perform(get("/cart")
-                        .param("userId", userId.toString()))
+                        .cookie(new Cookie("userId", userId.toString())))
                 .andExpect(status().isOk());
     }
 
@@ -103,7 +104,7 @@ public class HttpTest {
         Integer bookId = 2;
         when(userService.addBookToCart(userId, bookId)).thenReturn(true);
         mockMvc.perform(post("/cart/add")
-                        .param("userId", userId.toString())
+                        .cookie(new Cookie("userId", userId.toString()))
                         .param("bookId", bookId.toString()))
                 .andExpect(status().isFound());
     }
