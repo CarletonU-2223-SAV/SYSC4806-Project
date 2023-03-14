@@ -19,15 +19,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/home")
 public class BookstoreController {
     private final BookService bookService;
-
-    //temp until user screen added
-    private final ShoppingCartService shoppingCartService;
-
+    private final UserService userService;
 
     @Autowired
-    public BookstoreController(BookService bookService, ShoppingCartService shoppingCartService) {
-        this.shoppingCartService = shoppingCartService;
+    public BookstoreController(BookService bookService, UserService userService) {
         this.bookService = bookService;
+        this.userService = userService;
     }
 
     @GetMapping("")
@@ -39,7 +36,7 @@ public class BookstoreController {
             HttpServletResponse response,
             Model model
     ) {
-        Cookie springCookie = new Cookie("cartId", String.valueOf(shoppingCartService.getLowestID()));
+        Cookie springCookie = new Cookie("userId", String.valueOf(userService.getLowestID()));
         response.addCookie(springCookie);
         List<Book> books = this.bookService.list().stream()
             .filter(book -> (
