@@ -11,57 +11,57 @@ import java.util.*;
 @RequestMapping("/cart")
 public class ShoppingCartController {
 
-    private final ShoppingCartService shoppingCartService;
+    private final UserService userService;
     private final BookService bookService;
 
     @Autowired
-    public ShoppingCartController(ShoppingCartService shoppingCartService, BookService bookService){
-        this.shoppingCartService = shoppingCartService;
+    public ShoppingCartController(UserService userService, BookService bookService){
+        this.userService = userService;
         this.bookService = bookService;
     }
 
     @GetMapping("")
-    public String cart(@CookieValue Integer cartId,
+    public String cart(@CookieValue Integer userId,
                        Model model){
-        Map<Integer, Integer> bookIds = shoppingCartService.listBooksInCart(cartId);
+        Map<Integer, Integer> bookIds = userService.listBooksInCart(userId);
         Map<Book, Integer> books = new TreeMap<>(Comparator.comparing(Book::getTitle));
         for (Integer id : bookIds.keySet()){
             if (bookService.get(id) == null){
-                shoppingCartService.removeBookFromCart(cartId, id);
+                userService.removeBookFromCart(userId, id);
             }else{
                 books.put(bookService.get(id), bookIds.get(id));
             }
         }
         model.addAttribute("books", books);
-        model.addAttribute("cartId", cartId);
+        model.addAttribute("userId", userId);
         return "cart-page";
     }
 
     @PostMapping("/add")
-    public String addBook(@CookieValue Integer cartId,
+    public String addBook(@CookieValue Integer userId,
                           @RequestParam Integer bookId){
-        shoppingCartService.addBookToCart(cartId, bookId);
+        userService.addBookToCart(userId, bookId);
         return "redirect:/cart";
     }
 
     @PostMapping ("/remove")
-    public String removeBook(@RequestParam Integer cartId,
+    public String removeBook(@RequestParam Integer userId,
                              @RequestParam Integer bookId){
-        shoppingCartService.removeBookFromCart(cartId, bookId);
+        userService.removeBookFromCart(userId, bookId);
         return "redirect:/cart";
     }
 
     @PostMapping ("/clear")
-    public String clearCart(@RequestParam Integer cartId){
-        shoppingCartService.clearCart(cartId);
+    public String clearCart(@RequestParam Integer userId){
+        userService.clearCart(userId);
         return "redirect:/cart";
     }
 
     @PostMapping ("/changeOrdAmo")
-    public String changeOrderAmount(@RequestParam Integer cartId,
+    public String changeOrderAmount(@RequestParam Integer userId,
                                     @RequestParam Integer bookId,
                                     @RequestParam Integer orderAmount){
-        shoppingCartService.changeOrderAmount(cartId, bookId, orderAmount);
+        userService.changeOrderAmount(userId, bookId, orderAmount);
         return "redirect:/cart";
     }
 }

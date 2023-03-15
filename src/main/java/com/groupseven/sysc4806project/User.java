@@ -9,6 +9,8 @@ public class User {
     private boolean isAdmin;
     private String name;
 
+    private ShoppingCart cart;
+
     public User() {
     }
 
@@ -36,5 +38,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    public ShoppingCart getCart() {
+        return cart;
+    }
+
+    public void setCart(ShoppingCart cart) {
+        this.cart = cart;
     }
 }
