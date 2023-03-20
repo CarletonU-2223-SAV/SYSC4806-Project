@@ -132,4 +132,9 @@ public class UserService {
         return true;
     }
 
+    @GetMapping("/{userName}")
+    public User getUserName(@PathVariable String userName) {
+        return userRepository.findUserByName(userName).orElse(null);
+    }
+
 }

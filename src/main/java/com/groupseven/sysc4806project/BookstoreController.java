@@ -108,5 +108,6 @@ public class BookstoreController {
         model.addAttribute("book", book);
         return "add-edit";
     }
+
 }
 
