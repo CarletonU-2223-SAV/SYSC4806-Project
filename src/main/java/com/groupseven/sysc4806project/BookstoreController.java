@@ -34,11 +34,12 @@ public class BookstoreController {
             @RequestParam(defaultValue = "") String author,
             @RequestParam(defaultValue = "") String publisher,
             @RequestParam(defaultValue = "") String genre,
-            HttpServletResponse response,
+            @CookieValue(required = false) Integer userId,
             Model model
     ) {
-        Cookie springCookie = new Cookie("userId", String.valueOf(userService.getLowestID()));
-        response.addCookie(springCookie);
+        System.out.println("check1");
+        /*Cookie springCookie = new Cookie("userId", String.valueOf(userService.getLowestID()));
+        response.addCookie(springCookie);*/
         List<Book> books = this.bookService.list().stream()
             .filter(book -> (
                 (isbn.equals("") || book.getIsbn().equals(isbn))
@@ -47,6 +48,11 @@ public class BookstoreController {
                 && (publisher.equals("") || StringUtils.containsIgnoreCase(book.getPublisher(), publisher))
                 && (genre.equals("") || StringUtils.containsIgnoreCase(book.getGenre(), genre))
             )).collect(Collectors.toList());
+        System.out.println(userId);
+        if(userId != null){
+            User user = userService.getUser(userId);
+            model.addAttribute("user", user);
+        }
         model.addAttribute("books", books);
         return "index";
     }

@@ -19,7 +19,7 @@ public class UserService {
         this.bookRepository = bookRepository;
     }
 
-    public Integer getLowestID(){
+    /*public Integer getLowestID(){
         User user = null;
         for (User currentUser : userRepository.findAll()){
             if (user == null || currentUser.getId() < user.getId()){
@@ -30,7 +30,7 @@ public class UserService {
             return createUser("Adam", true);
         }
         return user.getId();
-    }
+    }*/
 
     @GetMapping("/{userId}")
     public User getUser(@PathVariable int userId){

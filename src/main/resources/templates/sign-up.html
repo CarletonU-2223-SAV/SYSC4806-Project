@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Amazin Bookstore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <form action="/cart" method="POST">
-        <input name="cartId" type="hidden">
-        <button class="text-l font-bold text-white">Cart</button>
+    <form action="/user/create-user" method="POST">
+        <p>Username: </p><input name="username" type="text"  class="border-2 rounded-md">
+        <p>Admin Privilege: </p><input name="isAdmin" type="checkbox">
+        <p class="col-span-2">
+            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Sign Up</button>
+            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
+        </p>
     </form>
 </body>
 </html>
