@@ -12,8 +12,8 @@
         <a href="/home">Amazin Bookstore</a>
       </h1>
       <div>
-          <form action="/cart" method="GET">
-              <input name="userId" type="hidden">
+          <form th:if="${user != 0}" action="/cart" method="GET">
+              <input name="cartId" type="hidden">
               <button class="text-l font-bold text-white">Cart</button>
           </form>
       </div>
