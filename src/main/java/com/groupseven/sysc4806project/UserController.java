@@ -56,8 +56,9 @@ public class UserController {
         if(isAdmin == null){
             isAdmin = false;
         }
-        if(userService.getUserName(username) != null) {
-            model.addAttribute("user", userService.getUserName(username));
+        User user = userService.getUserName(username);
+        if(user!= null) {
+            model.addAttribute("user", user);
             return "sign-up";
         }else{
             userService.createUser(username, isAdmin);

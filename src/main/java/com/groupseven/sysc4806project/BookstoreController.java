@@ -48,10 +48,8 @@ public class BookstoreController {
 
         if(userId != null){
             User user = userService.getUser(userId);
-            System.out.println(userId);
             model.addAttribute("user", user);
         }else{
-            System.out.println("Check1");
             model.addAttribute("user", null);
         }
         model.addAttribute("books", books);
