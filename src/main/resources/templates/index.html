@@ -30,7 +30,7 @@
                     <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-4">Search</button>
                 </form>
             </div>
-            <form action="/home/transit-to-add-book" method="GET">
+            <form th:if="${user != null && user.isAdmin()}"action="/home/transit-to-add-book" method="GET">
                 <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="submit">Add new book</button>
             </form>
         </div>
@@ -87,11 +87,11 @@
                                 <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Add to cart</button>
                             </form>
                         </div>
-                        <form action="/home/transit-to-edit-book" method="GET">
+                        <form th:if="${user != null && user.isAdmin()}" action="/home/transit-to-edit-book" method="GET">
                             <input name="id" type="hidden"th:value="${book.getId()}">
                             <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Edit book</button>
                         </form>
-                        <form action="/home/delete-book" method="POST">
+                        <form th:if="${user != null && user.isAdmin()}" action="/home/delete-book" method="POST">
                             <input name="id" type="hidden"th:value="${book.getId()}"/>
                             <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Delete book</button>
                         </form>

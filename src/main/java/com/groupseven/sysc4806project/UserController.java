@@ -41,10 +41,11 @@ public class UserController {
     @GetMapping("/get-user")
     public String getUser(@RequestParam String username, HttpServletResponse response){
         User user = userService.getUserName(username);
-        Cookie springCookie = new Cookie("userId", String.valueOf(user.getId()));
-        System.out.println(springCookie);
-        springCookie.setPath("/");
-        response.addCookie(springCookie);
+        if (user != null) {
+            Cookie springCookie = new Cookie("userId", String.valueOf(user.getId()));
+            springCookie.setPath("/");
+            response.addCookie(springCookie);
+        }
         return "redirect:/home";
     }
 
