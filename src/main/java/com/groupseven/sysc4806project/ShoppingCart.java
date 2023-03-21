@@ -73,7 +73,4 @@ public class ShoppingCart {
     public void clear(){
         books.clear();
     }
-
-    public void checkout() {
-    }
 }

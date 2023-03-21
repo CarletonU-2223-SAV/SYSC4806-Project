@@ -78,6 +78,7 @@ public class BookTest {
         Book book = new Book();
         book.setGenre("A12");
         assertEquals("A12", book.getGenre());
+    }
 
     @Test
     public void set_getPrice() {

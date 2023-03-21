@@ -68,4 +68,10 @@ public class ShoppingCartController {
         userService.changeOrderAmount(userId, bookId, orderAmount);
         return "redirect:/cart";
     }
+
+    @PostMapping("/COH")
+    public String checkout(@RequestParam Integer userId){
+        userService.checkoutUser(userId);
+        return "redirect:/home";
+    }
 }

@@ -1,9 +1,11 @@
 package com.groupseven.sysc4806project;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -122,6 +124,29 @@ public class UserService {
     @GetMapping("/get/{userName}")
     public User getUserName(@PathVariable String userName) {
         return userRepository.findUserByName(userName).orElse(null);
+    }
+
+    @PostMapping("/checkout/{userId}")
+    public Boolean checkoutUser(@PathVariable Integer userId){
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null){
+            return false;
+        }
+        ShoppingCart cart = user.getCart();
+        Map<Integer, Integer> bookIDs = cart.getBooks();
+
+        for (int bookId : bookIDs.keySet()){
+            Book book = bookRepository.findById(bookId).orElse(null);
+            if (book == null){
+                return false;
+            }
+            int orderAmount = bookIDs.get(bookId);
+            int newInventory = book.getInventory() - orderAmount;
+            book.setInventory(newInventory);
+            bookRepository.save(book);
+        }
+        clearCart(userId);
+        return true;
     }
 
 }
