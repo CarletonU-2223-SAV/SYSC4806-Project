@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- Include header at top of page -->
-    <div th:insert="~{header :: header}"></div>
+    <div th:insert="~{header :: header(user=${user})}"></div>
 
     <!-- Cart table for books -->
     <div class="mx-4">

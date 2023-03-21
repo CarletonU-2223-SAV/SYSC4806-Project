@@ -32,6 +32,10 @@ public class ShoppingCartController {
                 books.put(bookService.get(id), bookIds.get(id));
             }
         }
+        User user = userService.getUser(userId);
+        if(user != null){
+            model.addAttribute("user", user);
+        }
         model.addAttribute("books", books);
         model.addAttribute("userId", userId);
         return "cart-page";
