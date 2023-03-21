@@ -20,7 +20,8 @@ public class UserController {
         this.userService = userService;
     }
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("user", new User());
         return "login";
     }
 
