@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,6 +57,14 @@ public class UserTest {
         ShoppingCart cart = new ShoppingCart();
         user.setCart(cart);
         assertEquals(user.getId(), user.getCart().getId());
+    }
+
+    @Test
+    public void set_get_PurchaseHistory() {
+        User user = new User();
+        Set<Book> purchasedBooks = new HashSet<>();
+        user.setPurchaseHistory(purchasedBooks);
+        assertEquals(purchasedBooks, user.getPurchaseHistory());
     }
 
     @Test
