@@ -144,4 +144,32 @@ public class HttpTest {
                 .andExpect(status().isFound());
 
     }
+
+    @Test
+    public void login() throws Exception {
+        this.mockMvc.perform(get("/user/login"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Username:")));
+    }
+
+    @Test
+    public void signUp() throws Exception {
+        this.mockMvc.perform(get("/user/sign-up"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Sign Up")));
+    }
+
+    @Test
+    public void logOut() throws Exception {
+        this.mockMvc.perform(get("/user/log-out"))
+                .andExpect(status().isFound());
+    }
+
+    @Test
+    public void getUserForLogin() throws Exception {
+        String name = "Beta";
+        when(userService.createUser(name, false)).thenReturn(1);
+        this.mockMvc.perform(get("/user/get-user").param("username", name))
+                .andExpect(status().isFound());
+    }
 }

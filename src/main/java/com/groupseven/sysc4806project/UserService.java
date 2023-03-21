@@ -119,7 +119,7 @@ public class UserService {
         return true;
     }
 
-    @GetMapping("/{userName}")
+    @GetMapping("/get/{userName}")
     public User getUserName(@PathVariable String userName) {
         return userRepository.findUserByName(userName).orElse(null);
     }

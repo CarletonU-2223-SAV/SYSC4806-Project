@@ -247,16 +247,15 @@ public class UserTest {
         String name = "alpha";
         User user = new User();
         user.setName("alpha");
-
         userRepository.save(user);
 
         ResponseEntity<User> response = restTemplate.getForEntity(
-                "/api/users/alpha",
+                "/api/users/get/" + name,
                 User.class
         );
-        //assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(name, response.getBody().getName());
-        assertTrue(userRepository.findUserByName(name).isEmpty());
+        assertFalse(userRepository.findUserByName(name).isEmpty());
     }
 }
