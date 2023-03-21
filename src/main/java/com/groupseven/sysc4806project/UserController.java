@@ -39,14 +39,18 @@ public class UserController {
     }
 
     @GetMapping("/get-user")
-    public String getUser(@RequestParam String username, HttpServletResponse response){
+    public String getUser(@RequestParam String username, HttpServletResponse response, Model model){
         User user = userService.getUserName(username);
         if (user != null) {
             Cookie springCookie = new Cookie("userId", String.valueOf(user.getId()));
             springCookie.setPath("/");
             response.addCookie(springCookie);
+            return "redirect:/home";
+        }else{
+            model.addAttribute("user", null);
+            return "login";
         }
-        return "redirect:/home";
+
     }
 
     @PostMapping("/create-user")
