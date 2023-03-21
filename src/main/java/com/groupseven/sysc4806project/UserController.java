@@ -29,11 +29,21 @@ public class UserController {
         return "sign-up";
     }
 
+    @GetMapping("/log-out")
+    public String logout(HttpServletResponse response) {
+        Cookie springCookie = new Cookie("userId", null);
+        springCookie.setMaxAge(0);
+        springCookie.setPath("/");
+        response.addCookie(springCookie);
+        return "redirect:/home";
+    }
+
     @GetMapping("/get-user")
     public String getUser(@RequestParam String username, HttpServletResponse response){
         User user = userService.getUserName(username);
         Cookie springCookie = new Cookie("userId", String.valueOf(user.getId()));
         System.out.println(springCookie);
+        springCookie.setPath("/");
         response.addCookie(springCookie);
         return "redirect:/home";
     }

@@ -6,20 +6,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <div th:fragment="header(user)">
+  <div th:fragment="header">
     <div class="bg-blue-800 h-24 flex items-center justify-between px-4">
       <h1 class="text-2xl font-bold text-white">
         <a href="/home">Amazin Bookstore</a>
       </h1>
       <div>
-          <form th:if="${user==null}" action="/cart" method="GET">
+          <form th:unless="${user==null}" action="/cart" method="GET">
               <button class="text-l font-bold text-white">Cart</button>
           </form>
-          <form th:unless="${user}" action="/user/login" method="GET">
+          <form th:if="${user==null}" action="/user/login" method="GET">
               <button class="text-l font-bold text-white">Login</button>
           </form>
-          <form th:unless="${user==null}" action="/user/sign-up" method="GET">
+          <form th:if="${user==null}" action="/user/sign-up" method="GET">
               <button class="text-l font-bold text-white">Sign up</button>
+          </form>
+          <form th:unless="${user==null}" action="/user/log-out" method="GET">
+              <button class="text-l font-bold text-white">Log out</button>
           </form>
       </div>
     </div>
