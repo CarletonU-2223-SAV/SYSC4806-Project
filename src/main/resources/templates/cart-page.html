@@ -19,6 +19,7 @@
                 <th></th>
                 <th>ISBN</th>
                 <th>Title</th>
+                <th>Price</th>
                 <th>Order Amount</th>
                 <th>Actions</th>
             </tr>
@@ -34,6 +35,9 @@
                 </td>
                 <td>
                     <p th:text="${book.getTitle()}" />
+                </td>
+                <td>
+                    <p th:text="'$' + ${book.getPrice()}" />
                 </td>
                 <td>
                     <form action="/cart/changeOrdAmo" method="POST">
