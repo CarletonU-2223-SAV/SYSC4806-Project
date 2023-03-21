@@ -33,6 +33,7 @@ public class BookstoreController {
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "") String author,
             @RequestParam(defaultValue = "") String publisher,
+            @RequestParam(defaultValue = "") String genre,
             HttpServletResponse response,
             Model model
     ) {
@@ -44,6 +45,7 @@ public class BookstoreController {
                 && (title.equals("") || StringUtils.containsIgnoreCase(book.getTitle(), title))
                 && (author.equals("") || StringUtils.containsIgnoreCase(book.getAuthor(), author))
                 && (publisher.equals("") || StringUtils.containsIgnoreCase(book.getPublisher(), publisher))
+                && (genre.equals("") || StringUtils.containsIgnoreCase(book.getGenre(), genre))
             )).collect(Collectors.toList());
         model.addAttribute("books", books);
         return "index";
@@ -56,13 +58,14 @@ public class BookstoreController {
             @RequestParam(defaultValue = "") String description,
             @RequestParam String author,
             @RequestParam String publisher,
+            @RequestParam String genre,
             @RequestParam(defaultValue = "0") Integer inventory,
             @RequestParam(required = false) MultipartFile image
     ) {
         if (inventory < 0) {
             inventory = 0;
         }
-        this.bookService.create(isbn,title,description,author,publisher,inventory,image);
+        this.bookService.create(isbn,title,description,author,publisher,genre, inventory,image);
         return "redirect:/home";
     }
 
@@ -73,6 +76,7 @@ public class BookstoreController {
             @RequestParam(required = false) String description,
             @RequestParam(required = false) String author,
             @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) String genre,
             @RequestParam(required = false) Integer inventory,
             @RequestParam(required = false) MultipartFile image,
             @RequestParam(required = false) Boolean removeImage,
@@ -81,7 +85,7 @@ public class BookstoreController {
         if (inventory < 0) {
             inventory = 0;
         }
-        this.bookService.update(book_id,isbn,title,description,author,publisher,inventory,image, removeImage);
+        this.bookService.update(book_id,isbn,title,description,author,publisher,genre,inventory,image, removeImage);
         return "redirect:/home";
     }
 

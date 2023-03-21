@@ -73,6 +73,13 @@ public class BookTest {
     }
 
     @Test
+    public void set_getGenre() {
+        Book book = new Book();
+        book.setGenre("A12");
+        assertEquals("A12", book.getGenre());
+    }
+
+    @Test
     public void getImage() {
         Book book = new Book();
         book.setId(1);
@@ -123,6 +130,7 @@ public class BookTest {
         params.add("description", "A book about math mistakes");
         params.add("author", "Matt Parker");
         params.add("publisher", "Riverhead Books");
+        params.add("genre", "action");
         params.add("inventory", "50");
         ResponseEntity<Integer> response = restTemplate.postForEntity(
                 "/api/books",
@@ -140,6 +148,7 @@ public class BookTest {
         assertEquals("A book about math mistakes", b.getDescription());
         assertEquals("Matt Parker", b.getAuthor());
         assertEquals("Riverhead Books", b.getPublisher());
+        assertEquals("action", b.getGenre());
         assertEquals(50, b.getInventory());
     }
 
@@ -150,6 +159,7 @@ public class BookTest {
         params.add("title", "Twilight");
         params.add("author", "Stephenie Meyer");
         params.add("publisher", "Little, Brown and Company");
+        params.add("genre", "Action");
         ResponseEntity<Integer> response = restTemplate.postForEntity(
                 "/api/books",
                 params,
@@ -166,6 +176,7 @@ public class BookTest {
         assertEquals("", b.getDescription());
         assertEquals("Stephenie Meyer", b.getAuthor());
         assertEquals("Little, Brown and Company", b.getPublisher());
+        assertEquals("Action", b.getGenre());
         assertEquals(0, b.getInventory());
     }
 
@@ -177,6 +188,7 @@ public class BookTest {
         b.setDescription("A game about hunger");
         b.setAuthor("Suzan Collins");
         b.setPublisher("Scholar");
+        b.setGenre("Fantasy");
         b.setInventory(0);
         this.bookRepository.save(b);
 
@@ -186,6 +198,7 @@ public class BookTest {
         params.add("description", "The games of hunger");
         params.add("author", "Suzanne Collins");
         params.add("publisher", "Scholastic");
+        params.add("genre", "Sci-fi");
         params.add("inventory", "10");
 
         ResponseEntity<Boolean> response = restTemplate.postForEntity(
@@ -205,6 +218,7 @@ public class BookTest {
         assertEquals("The games of hunger", b.getDescription());
         assertEquals("Suzanne Collins", b.getAuthor());
         assertEquals("Scholastic", b.getPublisher());
+        assertEquals("Sci-fi", b.getGenre());
         assertEquals(10, b.getInventory());
     }
 
@@ -216,6 +230,7 @@ public class BookTest {
         params.add("description", "The games of hunger");
         params.add("author", "Suzanne Collins");
         params.add("publisher", "Scholastic");
+        params.add("genre", "Fantasy");
         params.add("inventory", "10");
         ResponseEntity<Boolean> response = restTemplate.postForEntity(
                 "/api/books/9999999",
