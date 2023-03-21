@@ -58,12 +58,15 @@
             </tbody>
         </table>
         <p class="ml-4 my-4" th:if="${books == null || books.isEmpty()}">Cart is Empty</p>
-        <div class="flex">
+        <div th:unless="${books == null || books.isEmpty()}" class="flex">
             <form action="/cart/clear" method="POST">
                 <input name="userId" type="hidden"th:value="${userId}">
                 <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Clear cart</button>
             </form>
-            <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Checkout</button>
+            <form action="/cart/goToCOH" method="GET">
+                <input name="userId" type="hidden"th:value="${userId}">
+                <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Checkout</button>
+            </form>
         </div>
     </div>
 </body>

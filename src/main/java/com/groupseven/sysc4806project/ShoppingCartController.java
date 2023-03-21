@@ -69,6 +69,25 @@ public class ShoppingCartController {
         return "redirect:/cart";
     }
 
+    @GetMapping("/goToCOH")
+    public String goToCheckoutPage(@RequestParam Integer userId,
+                                   Model model){
+        User user = userService.getUser(userId);
+        Map<Integer, Integer> bookIds = userService.listBooksInCart(userId);
+        Map<Book, Integer> books = new TreeMap<>(Comparator.comparing(Book::getTitle));
+        for (Integer id : bookIds.keySet()){
+            if (bookService.get(id) == null){
+                userService.removeBookFromCart(userId, id);
+            }else{
+                books.put(bookService.get(id), bookIds.get(id));
+            }
+        }
+        model.addAttribute("books", books);
+        model.addAttribute("user", user);
+        return "checkout-page";
+
+    }
+
     @PostMapping("/COH")
     public String checkout(@RequestParam Integer userId){
         userService.checkoutUser(userId);
