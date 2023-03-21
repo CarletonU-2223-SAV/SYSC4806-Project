@@ -170,6 +170,6 @@ public class HttpTest {
         String name = "Beta";
         when(userService.createUser(name, false)).thenReturn(1);
         this.mockMvc.perform(get("/user/get-user").param("username", name))
-                .andExpect(status().isFound());
+                .andExpect(status().isOk());
     }
 }
