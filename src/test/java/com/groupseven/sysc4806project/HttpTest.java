@@ -54,12 +54,13 @@ public class HttpTest {
         b.setIsbn("55555");
         b.setAuthor("Arthur");
         b.setPublisher("PubCo");
+        b.setGenre("Dark");
         when(bookService.list()).thenReturn(List.of(b));
         this.mockMvc.perform(get("/home?title=My Book 2"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Arthur")));
 
-        this.mockMvc.perform(get("/home?title=Other Book&publisher=PubCo"))
+        this.mockMvc.perform(get("/home?title=Other Book&publisher=PubCo&genre=Dark"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("There are no books to display")));
 
@@ -70,7 +71,7 @@ public class HttpTest {
 
     @Test
     public void testAddBookPage() throws Exception {
-        this.mockMvc.perform(post("/home/add-book?isbn=Test&title=Test title&description=Test description&author=Test author&publisher=Test publisher&inventory=4"))
+        this.mockMvc.perform(post("/home/add-book?isbn=Test&title=Test title&description=Test description&author=Test author&publisher=Test publisher&genre=action&inventory=4"))
                 .andExpect(status().isFound());
     }
 
@@ -83,6 +84,7 @@ public class HttpTest {
         test.setAuthor("Test author");
         test.setIsbn("Test");
         test.setPublisher("Test publisher");
+        test.setGenre("Test genre");
         when(bookService.list()).thenReturn(List.of(test));
         this.mockMvc.perform(post("/home/edit-book?description=Test description2&inventory=5&book_id=1"))
                 .andExpect(status().isFound());

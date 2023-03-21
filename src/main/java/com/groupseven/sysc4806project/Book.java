@@ -12,6 +12,16 @@ public class Book {
 
     private String isbn, description, title, author, publisher;
 
+    private String genre;
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
     public Book() {
     }
 

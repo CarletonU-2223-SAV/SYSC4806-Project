@@ -18,6 +18,7 @@
       <p>Description: </p><textarea type="text" name="description" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getDescription()}"></textarea>
       <p>Author: </p><input type="text" name="author" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getAuthor()}" th:disabled="${book} != null"/>
       <p>Publisher: </p><input type="text" name="publisher" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getPublisher()}" th:disabled="${book} != null"/>
+      <p>Genre: </p><input type="text" name="genre" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getGenre()}" th:disabled="${book} != null"/>
       <p>Inventory: </p><input type="number" name="inventory" class="border-2 rounded-md" min="0" th:value="${book} == null ? '' : ${book.getInventory()}"/>
       <p>Image: </p>
       <div>

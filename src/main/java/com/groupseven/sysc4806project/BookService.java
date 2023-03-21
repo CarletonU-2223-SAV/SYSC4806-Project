@@ -39,6 +39,7 @@ public class BookService {
             @RequestParam(defaultValue = "") String description,
             @RequestParam String author,
             @RequestParam String publisher,
+            @RequestParam String genre,
             @RequestParam(defaultValue = "0") Integer inventory,
             @RequestParam(required = false) MultipartFile image
     ) {
@@ -49,6 +50,7 @@ public class BookService {
         newBook.setAuthor(author);
         newBook.setPublisher(publisher);
         newBook.setInventory(inventory);
+        newBook.setGenre(genre);
 
         this.repo.save(newBook);
 
@@ -67,6 +69,7 @@ public class BookService {
         @RequestParam(required = false) String description,
         @RequestParam(required = false) String author,
         @RequestParam(required = false) String publisher,
+        @RequestParam(required = false) String genre,
         @RequestParam(required = false) Integer inventory,
         @RequestParam(required = false) MultipartFile image,
         @RequestParam(required = false) Boolean removeImage
@@ -97,6 +100,10 @@ public class BookService {
 
         if (publisher != null) {
             book.setPublisher(publisher);
+        }
+
+        if (genre != null) {
+            book.setGenre(genre);
         }
 
         if (inventory != null) {
