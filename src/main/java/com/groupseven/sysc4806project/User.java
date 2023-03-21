@@ -2,16 +2,20 @@ package com.groupseven.sysc4806project;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 public class User {
     private int id;
     private boolean isAdmin;
     private String name;
-
     private ShoppingCart cart;
+    private Set<Book> purchaseHistory;
 
     public User() {
+        purchaseHistory = new HashSet<>();
     }
 
     @Id
@@ -47,5 +51,14 @@ public class User {
 
     public void setCart(ShoppingCart cart) {
         this.cart = cart;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Set<Book> getPurchaseHistory() {
+        return purchaseHistory;
+    }
+
+    public void setPurchaseHistory(Set<Book> purchaseHistory) {
+        this.purchaseHistory = purchaseHistory;
     }
 }
