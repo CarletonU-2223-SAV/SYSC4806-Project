@@ -10,7 +10,7 @@
 </head>
 <body>
     <!-- Include header at top of page -->
-    <div th:insert="~{header :: header(user=user)}"></div>
+    <div th:insert="~{header :: header(user=${user})}"></div>
     <div class="mx-4">
         <!-- Search filters and new book button -->
         <div class="flex justify-between items-end py-4">

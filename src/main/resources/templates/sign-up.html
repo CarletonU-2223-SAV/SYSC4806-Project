@@ -14,5 +14,8 @@
             <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1" type="Reset">Reset</button>
         </p>
     </form>
+    <div th:if="${user}">
+        <label>Username has already existed, please pick another username</label>
+    </div>
 </body>
 </html>

@@ -30,9 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/get-user")
-    public String getUser(@RequestParam String username, Model model, HttpServletResponse response){
+    public String getUser(@RequestParam String username, HttpServletResponse response){
         User user = userService.getUserName(username);
-        model.addAttribute("User", user);
         Cookie springCookie = new Cookie("userId", String.valueOf(user.getId()));
         System.out.println(springCookie);
         response.addCookie(springCookie);
@@ -41,11 +40,17 @@ public class UserController {
 
     @PostMapping("/create-user")
     public String createUser(@RequestParam String username,
-                             @RequestParam(required = false) Boolean isAdmin) {
+                             @RequestParam(required = false) Boolean isAdmin,
+                             Model model) {
         if(isAdmin == null){
             isAdmin = false;
         }
-        userService.createUser(username, isAdmin);
-        return"redirect:/home";
+        if(userService.getUserName(username) != null) {
+            model.addAttribute("user", userService.getUserName(username));
+            return "sign-up";
+        }else{
+            userService.createUser(username, isAdmin);
+            return "redirect:/home";
+        }
     }
 }

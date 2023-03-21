@@ -37,9 +37,6 @@ public class BookstoreController {
             @CookieValue(required = false) Integer userId,
             Model model
     ) {
-        System.out.println("check1");
-        /*Cookie springCookie = new Cookie("userId", String.valueOf(userService.getLowestID()));
-        response.addCookie(springCookie);*/
         List<Book> books = this.bookService.list().stream()
             .filter(book -> (
                 (isbn.equals("") || book.getIsbn().equals(isbn))
@@ -48,13 +45,18 @@ public class BookstoreController {
                 && (publisher.equals("") || StringUtils.containsIgnoreCase(book.getPublisher(), publisher))
                 && (genre.equals("") || StringUtils.containsIgnoreCase(book.getGenre(), genre))
             )).collect(Collectors.toList());
-        System.out.println(userId);
+
         if(userId != null){
             User user = userService.getUser(userId);
+            System.out.println(userId);
             model.addAttribute("user", user);
+        }else{
+            System.out.println("Check1");
+            model.addAttribute("user", null);
         }
         model.addAttribute("books", books);
         return "index";
+
     }
 
     @PostMapping("/add-book")
