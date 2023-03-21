@@ -2,6 +2,7 @@ package com.groupseven.sysc4806project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -239,5 +240,22 @@ public class UserTest {
         assertNotNull(response.getBody());
         assertTrue(response.getBody());
         assertTrue(userRepository.findById(id).isEmpty());
+    }
+
+    @Test
+    public void testGetUserName(){
+        String name = "alpha";
+        User user = new User();
+        user.setName("alpha");
+        userRepository.save(user);
+
+        ResponseEntity<User> response = restTemplate.getForEntity(
+                "/api/users/get/" + name,
+                User.class
+        );
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(name, response.getBody().getName());
+        assertFalse(userRepository.findUserByName(name).isEmpty());
     }
 }

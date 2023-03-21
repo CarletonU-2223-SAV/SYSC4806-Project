@@ -12,9 +12,17 @@
         <a href="/home">Amazin Bookstore</a>
       </h1>
       <div>
-          <form action="/cart" method="GET">
-              <input name="userId" type="hidden">
+          <form th:unless="${user==null}" action="/cart" method="GET">
               <button class="text-l font-bold text-white">Cart</button>
+          </form>
+          <form th:if="${user==null}" action="/user/login" method="GET">
+              <button class="text-l font-bold text-white">Login</button>
+          </form>
+          <form th:if="${user==null}" action="/user/sign-up" method="GET">
+              <button class="text-l font-bold text-white">Sign up</button>
+          </form>
+          <form th:unless="${user==null}" action="/user/log-out" method="GET">
+              <button class="text-l font-bold text-white">Log out</button>
           </form>
       </div>
     </div>
