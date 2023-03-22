@@ -1,6 +1,5 @@
 package com.groupseven.sysc4806project;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -55,18 +54,24 @@ public class ShoppingCartController {
         if(user != null){
             model.addAttribute("user", user);
 
-            MultiValueMap<String, String> headers = new HttpHeaders();
-            headers.add("Content-Type", "application/json");
-            HttpEntity<String> entity = new HttpEntity<>(
-                    objectMapper.writeValueAsString(userService.getUser(userId).getCart()),
-                    headers
-            );
-            rates = restTemplate.exchange(
-                    SHIPPING_API,
-                    HttpMethod.POST,
-                    entity,
-                    new ParameterizedTypeReference<Map<String, String>>() {}
-            ).getBody();
+            try {
+                MultiValueMap<String, String> headers = new HttpHeaders();
+                headers.add("Content-Type", "application/json");
+                HttpEntity<String> entity = new HttpEntity<>(
+                        objectMapper.writeValueAsString(userService.getUser(userId).getCart()),
+                        headers
+                );
+                rates = restTemplate.exchange(
+                        SHIPPING_API,
+                        HttpMethod.POST,
+                        entity,
+                        new ParameterizedTypeReference<Map<String, String>>() {
+                        }
+                ).getBody();
+            } catch (Exception e) {
+                // Don't want to break the entire page if Azure goes down
+                e.printStackTrace();
+            }
         }
         model.addAttribute("rates", rates);
         model.addAttribute("books", books);
