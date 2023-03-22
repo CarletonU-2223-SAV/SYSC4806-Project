@@ -5,10 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Book {
     private int id;
     private int inventory;
+    private BigDecimal price;
 
     private String isbn, description, title, author, publisher;
 
@@ -31,6 +34,10 @@ public class Book {
 
     public void setInventory(int inventory) {
         this.inventory = inventory;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public void setIsbn(String isbn) {
@@ -66,6 +73,10 @@ public class Book {
 
     public int getInventory() {
         return inventory;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public String getIsbn() {

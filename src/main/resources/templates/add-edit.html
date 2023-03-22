@@ -20,6 +20,7 @@
       <p>Publisher: </p><input type="text" name="publisher" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getPublisher()}" th:disabled="${book} != null"/>
       <p>Genre: </p><input type="text" name="genre" class="border-2 rounded-md" th:value="${book} == null ? '' : ${book.getGenre()}" th:disabled="${book} != null"/>
       <p>Inventory: </p><input type="number" name="inventory" class="border-2 rounded-md" min="0" th:value="${book} == null ? '' : ${book.getInventory()}"/>
+      <p>Price: $</p><input type="number" step="0.01" name="price" class="border-2 rounded-md" min="0" th:value="${book} == null ? '' : ${book.getPrice()}" th:disabled="${book} != null"/>
       <p>Image: </p>
       <div>
         <input type="file" name="image" accept="image/*" class="cursor-pointer file:ease-in-out file:duration-300 file:hover:bg-blue-800 file:hover:text-white file:bg-white file:border-blue-800 file:border-2 file:rounded-md file:px-4 file:py-1.5">

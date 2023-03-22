@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -66,12 +67,14 @@ public class BookstoreController {
             @RequestParam String publisher,
             @RequestParam String genre,
             @RequestParam(defaultValue = "0") Integer inventory,
-            @RequestParam(required = false) MultipartFile image
+            @RequestParam(required = false) MultipartFile image,
+            @RequestParam(defaultValue = "0.00") BigDecimal price
+
     ) {
         if (inventory < 0) {
             inventory = 0;
         }
-        this.bookService.create(isbn,title,description,author,publisher,genre, inventory,image);
+        this.bookService.create(isbn,title,description,author,publisher,genre,inventory,image,price);
         return "redirect:/home";
     }
 
@@ -86,12 +89,13 @@ public class BookstoreController {
             @RequestParam(required = false) Integer inventory,
             @RequestParam(required = false) MultipartFile image,
             @RequestParam(required = false) Boolean removeImage,
+            @RequestParam(required = false) BigDecimal price,
             @RequestParam Integer book_id
     ) {
         if (inventory < 0) {
             inventory = 0;
         }
-        this.bookService.update(book_id,isbn,title,description,author,publisher,genre,inventory,image, removeImage);
+        this.bookService.update(book_id,isbn,title,description,author,publisher,genre,inventory,image,removeImage,price);
         return "redirect:/home";
     }
 

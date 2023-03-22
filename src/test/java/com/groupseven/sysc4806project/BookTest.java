@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +81,14 @@ public class BookTest {
     }
 
     @Test
+    public void set_getPrice() {
+        Book book = new Book();
+        BigDecimal price = new BigDecimal("888.22");
+        book.setPrice(price);
+        assertEquals(price, book.getPrice());
+    }
+
+    @Test
     public void getImage() {
         Book book = new Book();
         book.setId(1);
@@ -132,6 +141,7 @@ public class BookTest {
         params.add("publisher", "Riverhead Books");
         params.add("genre", "action");
         params.add("inventory", "50");
+        params.add("price", "55.99");
         ResponseEntity<Integer> response = restTemplate.postForEntity(
                 "/api/books",
                 params,
@@ -150,6 +160,7 @@ public class BookTest {
         assertEquals("Riverhead Books", b.getPublisher());
         assertEquals("action", b.getGenre());
         assertEquals(50, b.getInventory());
+        assertEquals(new BigDecimal("55.99"), b.getPrice());
     }
 
     @Test
@@ -178,6 +189,7 @@ public class BookTest {
         assertEquals("Little, Brown and Company", b.getPublisher());
         assertEquals("Action", b.getGenre());
         assertEquals(0, b.getInventory());
+        assertEquals(new BigDecimal("0.00"), b.getPrice());
     }
 
     @Test

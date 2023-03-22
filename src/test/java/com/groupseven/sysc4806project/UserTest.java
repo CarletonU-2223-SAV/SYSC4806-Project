@@ -275,4 +275,37 @@ public class UserTest {
         assertEquals(name, response.getBody().getName());
         assertFalse(userRepository.findUserByName(name).isEmpty());
     }
+
+    @Test
+    public void testCheckoutUser(){
+        User user = new User();
+        ShoppingCart cart = new ShoppingCart();
+        user.setCart(cart);
+        for (int i=0; i < 5; i++){
+            Book book = new Book();
+            book.setInventory(20);
+            bookRepository.save(book);
+            cart.addBookID(book.getId());
+            cart.setOrderAmount(5, book.getId());
+        }
+        userRepository.save(user);
+
+        ResponseEntity<Boolean> response = restTemplate.postForEntity(
+                "/api/users/checkout/" + user.getId(),
+                null,
+                Boolean.class
+        );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody());
+
+        user = userRepository.findById(user.getId()).orElseThrow();
+        cart = user.getCart();
+
+        assertTrue(cart.getBooks().isEmpty());
+        for (Book book : user.getPurchaseHistory()){
+            assertEquals(15, book.getInventory());
+        }
+    }
 }

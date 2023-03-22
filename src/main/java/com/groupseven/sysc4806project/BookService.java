@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,8 @@ public class BookService {
             @RequestParam String publisher,
             @RequestParam String genre,
             @RequestParam(defaultValue = "0") Integer inventory,
-            @RequestParam(required = false) MultipartFile image
+            @RequestParam(required = false) MultipartFile image,
+            @RequestParam(defaultValue = "0.00") BigDecimal price
     ) {
         Book newBook = new Book();
         newBook.setIsbn(isbn);
@@ -51,6 +53,7 @@ public class BookService {
         newBook.setPublisher(publisher);
         newBook.setInventory(inventory);
         newBook.setGenre(genre);
+        newBook.setPrice(price);
 
         this.repo.save(newBook);
 
@@ -72,7 +75,8 @@ public class BookService {
         @RequestParam(required = false) String genre,
         @RequestParam(required = false) Integer inventory,
         @RequestParam(required = false) MultipartFile image,
-        @RequestParam(required = false) Boolean removeImage
+        @RequestParam(required = false) Boolean removeImage,
+        @RequestParam(required = false) BigDecimal price
     ) {
         Optional<Book> bookOptional = this.repo.findById(bookId);
         if (bookOptional.isEmpty()) {
@@ -108,6 +112,10 @@ public class BookService {
 
         if (inventory != null) {
             book.setInventory(inventory);
+        }
+
+        if (price != null) {
+            book.setPrice(price);
         }
 
         this.repo.save(book);
