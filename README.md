@@ -29,6 +29,14 @@ Chosen topic: Amazin Bookstore & FaaS, Microservices, Amazon Lambda
 1. Package Maven
 2. Run Sysc4806ProjectApplication.class
 
+#### Class Diagram
+
+![Class Diagram](doc/class_diagram.png)
+
+#### Database Schema
+
+![Database Schema](doc/database_schema.png)
+
 #### Milestone 1
 
 In milestone 1, our team built the framework of the Amazin BookStore with many features implemented. Features created in this milestone: 
@@ -45,16 +53,34 @@ In milestone 1, our team built the framework of the Amazin BookStore with many f
   - All the searching is done with case-insensitive contains logic.
   - The only exception is the ISBN since it is unique for each book.
 
-The class diagram for this milestone is as follows:
-
-![Class Diagram](doc/class_diagram.png)
-
-The database schema used for the Amazin Bookstore system is as follows:
-
-![Database Schema](doc/database_schema.png)
-
-The team's plan for the next milestone is:
+The team's plan for milestone 2 is:
 - Implement the Checkout feature
 - Adding recommendation purchase feature based on what the user purchased in the past
 - Implement the features in the bookstore using the AWS Lambda function
 - Create and change active users
+
+#### Milestone 2
+
+In milestone 2, our team enhanced the features implemented in milestone 1.
+- Add purchase recommendations for users
+  - User model now holds a purchase history
+  - Genre field added to Book to help with recommendations
+- Add login/signup feature to manage users
+  - Signup requires a unique username
+  - Login only requires a username, user authentication is outside the scope of this project
+- Add checkout feature
+  - Books now have a cost associated with them
+  - Automatically updates inventory
+  - Presents a total cost, asks for shipping + billing info
+- Small refactor to make User own a ShoppingCart instead of the other way around
+  - Makes checkout function and login/logout easier to manage
+- Configure a separate database for testing
+  - Avoids cluttering the local database with test entries when running tests locally
+- Add an Azure Function to calculate shipping costs
+  - Deployed as a separate project
+  - Allows users to select from 3 different shipping options
+
+The team's plan for milestone 3 is:
+- Add more Azure Functions to demo their capabilities to a greater extent (shipping timelines, create return label, etc.)
+- Enhance recommendations to use Jaccard Distance in addition to genre data
+- Create an order history page, optionally add a review option
