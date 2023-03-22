@@ -4,20 +4,24 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    private final BookService bookService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BookService bookService) {
         this.userService = userService;
+        this.bookService = bookService;
     }
     @GetMapping("/login")
     public String login(Model model) {
@@ -37,6 +41,22 @@ public class UserController {
         springCookie.setPath("/");
         response.addCookie(springCookie);
         return "redirect:/home";
+    }
+
+    @GetMapping("/recommendation")
+    public String recommendation(@CookieValue Integer userId,
+                                 Model model) {
+        User user = userService.getUser(userId);
+        if(user == null) {
+            return "redirect:/home";
+        }else{
+            String result_genre = user.getMostCommonGenre();
+            List<Book> list_books = bookService.getBooks(result_genre);
+            list_books.removeIf(book ->user.getPurchaseHistory().contains(book));
+            model.addAttribute("user", user);
+            model.addAttribute("books", list_books);
+            return "recommendation";
+        }
     }
 
     @GetMapping("/get-user")
