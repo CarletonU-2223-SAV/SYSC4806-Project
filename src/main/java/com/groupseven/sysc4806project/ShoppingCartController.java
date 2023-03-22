@@ -82,6 +82,7 @@ public class ShoppingCartController {
     public String goToCheckoutPage(@RequestParam Integer userId,
                                    Model model){
         listBooks(userId, model);
+        model.addAttribute("userId", userId);
         return "checkout-page";
 
     }

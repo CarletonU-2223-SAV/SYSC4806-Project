@@ -74,7 +74,7 @@
     </table>
     <div class="flex">
       <form action="/cart/COH" method="POST">
-        <input name="userId" type="hidden"th:value="${user.getId()}">
+        <input name="userId" type="hidden"th:value="${userId}">
         <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Order Now!</button>
       </form>
       <form action="/cart" method="GET">

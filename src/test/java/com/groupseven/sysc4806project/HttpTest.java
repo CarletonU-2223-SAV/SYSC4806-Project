@@ -172,4 +172,24 @@ public class HttpTest {
         this.mockMvc.perform(get("/user/get-user").param("username", name))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void testGoToCheckoutPage() throws Exception {
+        Integer userId = 1;
+        Map<Integer, Integer> bookIds = Map.of(1,2,3,4);
+        when(userService.listBooksInCart(userId)).thenReturn(bookIds);
+        mockMvc.perform(get("/cart/goToCOH")
+                        .param("userId", userId.toString()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCheckout() throws Exception {
+        Integer userId = 1;
+        Map<Integer, Integer> bookIds = Map.of(1,2,3,4);
+        when(userService.checkoutUser(userId)).thenReturn(true);
+        mockMvc.perform(post("/cart/COH")
+                        .param("userId", userId.toString()))
+                .andExpect(status().isFound());
+    }
 }
