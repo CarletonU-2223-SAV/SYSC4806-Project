@@ -137,4 +137,10 @@ public class BookService {
         this.repo.delete(bookOptional.get());
         return true;
     }
+    @GetMapping("/get-books")
+    public List<Book> getBooks(@PathVariable String genre) {
+        List<Book> books = new ArrayList<>();
+        this.repo.findBooksByGenre(genre).iterator().forEachRemaining(books::add);
+        return books;
+    }
 }

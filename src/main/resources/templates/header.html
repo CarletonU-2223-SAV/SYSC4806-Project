@@ -24,6 +24,9 @@
           <form th:unless="${user==null}" action="/user/log-out" method="GET">
               <button class="text-l font-bold text-white">Log out</button>
           </form>
+          <form th:unless="${user==null}" action="/user/recommendation" method="GET">
+              <button class="text-l font-bold text-white">Recommendation</button>
+          </form>
       </div>
     </div>
   </div>
