@@ -58,7 +58,7 @@
             <p th:text="${book.getTitle()}" />
           </td>
           <td>
-            <p th:text="'$' + ${book.getPrice()}" />
+            <p th:text="'$' + ${#numbers.formatDecimal(book.getPrice(), 0, 'COMMA', 2, 'POINT')}" />
           </td>
           <td>
             <p th:text="${books.get(book)}" />
@@ -67,7 +67,7 @@
         <tr>
           <td colspan="3"></td>
           <td>
-            <b class="inline-block">Total: </b><p class="inline-block pl-2" th:text="'$' + ${totalPrice}" />
+            <b class="inline-block">Total: </b><p class="inline-block pl-2" th:text="'$' + ${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 2, 'POINT')}" />
           </td>
         </tr>
       </tbody>
