@@ -85,7 +85,6 @@
                         <div th:if="${book.getInventory() > 0}">
                             <form th:if="${user != null}" action="/cart/add" method="POST">
                                 <input name="bookId" type="hidden"th:value="${book.getId()}">
-                                <input name="userId" type="hidden">
                                 <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Add to cart</button>
                             </form>
                         </div>

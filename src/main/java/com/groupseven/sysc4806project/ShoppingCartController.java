@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Controller
@@ -20,16 +21,19 @@ public class ShoppingCartController {
         this.bookService = bookService;
     }
 
-    @GetMapping("")
-    public String cart(@CookieValue Integer userId,
-                       Model model){
+    public void listBooks(@CookieValue Integer userId,
+                          Model model) {
+        BigDecimal sum = BigDecimal.ZERO;
         Map<Integer, Integer> bookIds = userService.listBooksInCart(userId);
-        Map<Book, Integer> books = new TreeMap<>(Comparator.comparing(Book::getTitle));
+        Map<Book, Integer> books = new TreeMap<>(Comparator.comparing(Book::getId));
         for (Integer id : bookIds.keySet()){
-            if (bookService.get(id) == null){
+            Book book = bookService.get(id);
+            int orderAmount = bookIds.get(id);
+            if (book == null){
                 userService.removeBookFromCart(userId, id);
             }else{
-                books.put(bookService.get(id), bookIds.get(id));
+                books.put(book, orderAmount);
+                sum = sum.add(book.getPrice().multiply(new BigDecimal(orderAmount)));
             }
         }
         User user = userService.getUser(userId);
@@ -37,10 +41,15 @@ public class ShoppingCartController {
             model.addAttribute("user", user);
         }
         model.addAttribute("books", books);
-        model.addAttribute("userId", userId);
-        return "cart-page";
+        model.addAttribute("totalPrice", sum);
     }
 
+    @GetMapping("")
+    public String cart(@CookieValue Integer userId,
+                       Model model){
+        listBooks(userId, model);
+        return "cart-page";
+    }
     @PostMapping("/add")
     public String addBook(@CookieValue Integer userId,
                           @RequestParam Integer bookId){
@@ -72,18 +81,7 @@ public class ShoppingCartController {
     @GetMapping("/goToCOH")
     public String goToCheckoutPage(@RequestParam Integer userId,
                                    Model model){
-        User user = userService.getUser(userId);
-        Map<Integer, Integer> bookIds = userService.listBooksInCart(userId);
-        Map<Book, Integer> books = new TreeMap<>(Comparator.comparing(Book::getTitle));
-        for (Integer id : bookIds.keySet()){
-            if (bookService.get(id) == null){
-                userService.removeBookFromCart(userId, id);
-            }else{
-                books.put(bookService.get(id), bookIds.get(id));
-            }
-        }
-        model.addAttribute("books", books);
-        model.addAttribute("user", user);
+        listBooks(userId, model);
         return "checkout-page";
 
     }

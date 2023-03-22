@@ -144,7 +144,9 @@ public class UserService {
             int newInventory = book.getInventory() - orderAmount;
             book.setInventory(newInventory);
             bookRepository.save(book);
+            user.getPurchaseHistory().add(book);
         }
+        userRepository.save(user);
         clearCart(userId);
         return true;
     }
