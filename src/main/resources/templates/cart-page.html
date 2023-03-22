@@ -63,9 +63,13 @@
                 <input name="userId" type="hidden"th:value="${user.getId()}">
                 <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Clear cart</button>
             </form>
-            <form action="/cart/goToCOH" method="GET">
+            <form action="/cart/goToCOH" method="GET" th:unless="${rates == null || books == null || books.isEmpty()}" class="flex gap-2">
                 <input name="userId" type="hidden"th:value="${user.getId()}">
                 <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Checkout</button>
+                Shipping options:
+                <fieldset>
+                    <input type="radio" name="shipping" th:each="rate : ${rates.entrySet()}" th:text="${rate.getKey()} + ': $' + ${#numbers.formatDecimal(rate.getValue(), 0, 'COMMA', 2, 'POINT')} " class="ml-2" />
+                </fieldset>
             </form>
         </div>
     </div>

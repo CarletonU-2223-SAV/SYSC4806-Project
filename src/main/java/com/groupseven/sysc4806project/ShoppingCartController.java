@@ -1,9 +1,17 @@
 package com.groupseven.sysc4806project;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -14,11 +22,17 @@ public class ShoppingCartController {
 
     private final UserService userService;
     private final BookService bookService;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+
+    private static final String SHIPPING_API = "https://amazin.azurewebsites.net/api/calculateshipping";
 
     @Autowired
     public ShoppingCartController(UserService userService, BookService bookService){
         this.userService = userService;
         this.bookService = bookService;
+        this.restTemplate = new RestTemplate();
+        this.objectMapper = new ObjectMapper();
     }
 
     public void listBooks(@CookieValue Integer userId,
@@ -37,9 +51,24 @@ public class ShoppingCartController {
             }
         }
         User user = userService.getUser(userId);
+        Map<String, String> rates = null;
         if(user != null){
             model.addAttribute("user", user);
+
+            MultiValueMap<String, String> headers = new HttpHeaders();
+            headers.add("Content-Type", "application/json");
+            HttpEntity<String> entity = new HttpEntity<>(
+                    objectMapper.writeValueAsString(userService.getUser(userId).getCart()),
+                    headers
+            );
+            rates = restTemplate.exchange(
+                    SHIPPING_API,
+                    HttpMethod.POST,
+                    entity,
+                    new ParameterizedTypeReference<Map<String, String>>() {}
+            ).getBody();
         }
+        model.addAttribute("rates", rates);
         model.addAttribute("books", books);
         model.addAttribute("totalPrice", sum);
     }
