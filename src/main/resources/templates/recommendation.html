@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Amazin Bookstore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div th:insert="~{header :: header(user=${user})}"></div>
+  <div class="mx-4">
+    <div>
+      <table th:unless="${books == null || books.isEmpty()}" class="w-full">
+        <thead>
+        <tr>
+          <th></th>
+          <th>ISBN</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Description</th>
+          <th>Publisher</th>
+          <th>Genre</th>
+          <th>Inventory</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody class="text-center">
+        <tr th:each="book : ${books}">
+          <td class="w-16 h-16">
+            <a>
+              <img th:src="${book.getImageUrl()}">
+            </a>
+          </td>
+          <td>
+            <a th:text="${book.getIsbn()}" />
+          </td>
+          <td>
+            <a th:text="${book.getTitle()}" />
+          </td>
+          <td>
+            <a th:href="'/home?author=' + ${book.getAuthor()}" th:text="${book.getAuthor()}" />
+          </td>
+          <td th:text="${book.getDescription()}" />
+          <td>
+            <a th:href="'/home?publisher=' + ${book.getPublisher()}" th:text="${book.getPublisher()}" />
+          </td>
+          <td>
+            <a th:href="'/home?genre=' + ${book.getGenre()}" th:text="${book.getGenre()}" />
+          </td>
+          <td th:text="${book.getInventory()}" />
+          <td>
+            <div th:if="${book.getInventory() == 0}">
+              <p class="text-red-600">Out of stock</p>
+            </div>
+            <div th:if="${book.getInventory() > 0}">
+              <form th:if="${user != null}" action="/cart/add" method="POST">
+                <input name="bookId" type="hidden"th:value="${book.getId()}">
+                <input name="userId" type="hidden">
+                <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Add to cart</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <p th:if="${books == null || books.isEmpty()}">There are no books to display</p>
+    </div>
+</body>
+</html>

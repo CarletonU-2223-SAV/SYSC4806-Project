@@ -3,9 +3,11 @@ package com.groupseven.sysc4806project;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -151,4 +153,20 @@ public class UserService {
         return true;
     }
 
+    @PostMapping("/put-purchase-history")
+    public boolean putPurchaseHistory(@RequestParam String username) {
+        Optional<User> opt = userRepository.findUserByName(username);
+        User user = opt.get();
+        Book b = new Book();
+        b.setIsbn("98765");
+        b.setTitle("Hungry Games");
+        b.setDescription("A game about hunger");
+        b.setAuthor("Suzan Collins");
+        b.setPublisher("Scholar");
+        b.setGenre("Fantasy");
+        b.setInventory(0);
+        user.addPurchaseHistory(b);
+        userRepository.save(user);
+        return true;
+    }
 }

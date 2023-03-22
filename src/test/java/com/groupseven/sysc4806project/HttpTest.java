@@ -172,7 +172,7 @@ public class HttpTest {
         this.mockMvc.perform(get("/user/get-user").param("username", name))
                 .andExpect(status().isOk());
     }
-
+    
     @Test
     public void testGoToCheckoutPage() throws Exception {
         Integer userId = 1;
@@ -190,6 +190,16 @@ public class HttpTest {
         when(userService.checkoutUser(userId)).thenReturn(true);
         mockMvc.perform(post("/cart/COH")
                         .param("userId", userId.toString()))
+                .andExpect(status().isFound());
+    }
+    
+    @Test
+    public void recommendation() throws Exception {
+        String name = "Beta";
+        Integer userId = 1;
+        when(userService.createUser(name, false)).thenReturn(1);
+        this.mockMvc.perform(get("/user/recommendation").cookie(new Cookie("userId", userId.toString()))
+                        .param("username", name))
                 .andExpect(status().isFound());
     }
 }
