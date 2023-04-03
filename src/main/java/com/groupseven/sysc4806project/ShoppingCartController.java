@@ -1,6 +1,5 @@
 package com.groupseven.sysc4806project;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/cart")
@@ -23,7 +21,6 @@ public class ShoppingCartController {
     private final UserService userService;
     private final BookService bookService;
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
 
     private static final String SHIPPING_API = "https://amazin.azurewebsites.net/api/calculateshipping";
 
@@ -32,7 +29,6 @@ public class ShoppingCartController {
         this.userService = userService;
         this.bookService = bookService;
         this.restTemplate = new RestTemplate();
-        this.objectMapper = new ObjectMapper();
     }
 
     public void listBooks(@CookieValue Integer userId,
