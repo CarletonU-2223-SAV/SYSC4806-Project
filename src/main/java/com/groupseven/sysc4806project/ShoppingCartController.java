@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/cart")
@@ -57,16 +58,15 @@ public class ShoppingCartController {
             try {
                 MultiValueMap<String, String> headers = new HttpHeaders();
                 headers.add("Content-Type", "application/json");
-                HttpEntity<String> entity = new HttpEntity<>(
-                        objectMapper.writeValueAsString(userService.getUser(userId).getCart()),
+                HttpEntity<Integer> entity = new HttpEntity<>(
+                        user.getCart().getBooks().values().stream().mapToInt(Integer::intValue).sum(),
                         headers
                 );
                 rates = restTemplate.exchange(
                         SHIPPING_API,
                         HttpMethod.POST,
                         entity,
-                        new ParameterizedTypeReference<Map<String, String>>() {
-                        }
+                        new ParameterizedTypeReference<Map<String, String>>() {}
                 ).getBody();
             } catch (Exception e) {
                 // Don't want to break the entire page if Azure goes down
