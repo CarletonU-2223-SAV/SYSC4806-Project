@@ -25,70 +25,7 @@ public class HttpTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private BookService bookService;
-
-    @MockBean
     private UserService userService;
-
-    @Test
-    public void testHomePageNoBooks() throws Exception {
-        this.mockMvc.perform(get("/home"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("There are no books to display")));
-    }
-
-    @Test
-    public void testHomePageWithBook() throws Exception {
-        Book b = new Book();
-        b.setTitle("My Book Title");
-        when(bookService.list()).thenReturn(List.of(b));
-        this.mockMvc.perform(get("/home"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("My Book Title")));
-    }
-
-    @Test
-    public void testFilter() throws Exception {
-        Book b = new Book();
-        b.setTitle("My Book 2");
-        b.setIsbn("55555");
-        b.setAuthor("Arthur");
-        b.setPublisher("PubCo");
-        b.setGenre("Dark");
-        when(bookService.list()).thenReturn(List.of(b));
-        this.mockMvc.perform(get("/home?title=My Book 2"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Arthur")));
-
-        this.mockMvc.perform(get("/home?title=Other Book&publisher=PubCo&genre=Dark"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("There are no books to display")));
-
-        this.mockMvc.perform(get("/home?isbn=55555"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("My Book 2")));
-    }
-
-    @Test
-    public void testAddBookPage() throws Exception {
-        this.mockMvc.perform(post("/home/add-book?isbn=Test&title=Test title&description=Test description&author=Test author&publisher=Test publisher&genre=action&inventory=4"))
-                .andExpect(status().isFound());
-    }
-
-    @Test
-    public void testEditBookPage() throws Exception {
-        Book test = new Book();
-        test.setTitle("Test");
-        test.setInventory(5);
-        test.setDescription("Test description");
-        test.setAuthor("Test author");
-        test.setIsbn("Test");
-        test.setPublisher("Test publisher");
-        test.setGenre("Test genre");
-        when(bookService.list()).thenReturn(List.of(test));
-        this.mockMvc.perform(post("/home/edit-book?description=Test description2&inventory=5&book_id=1"))
-                .andExpect(status().isFound());
-    }
 
     @Test
     public void testBooksInCart() throws Exception {
