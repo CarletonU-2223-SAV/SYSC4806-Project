@@ -15,6 +15,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.hamcrest.Matchers.containsString;
 @SpringBootTest
 @AutoConfigureMockMvc
 class ShoppingCartControllerTest {
@@ -35,7 +37,8 @@ class ShoppingCartControllerTest {
         when(userService.listBooksInCart(userId)).thenReturn(bookIds);
         mockMvc.perform(get("/cart")
                         .cookie(new Cookie("userId", userId.toString())))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("")));
     }
 
     @Test
@@ -46,7 +49,8 @@ class ShoppingCartControllerTest {
         mockMvc.perform(post("/cart/add")
                         .cookie(new Cookie("userId", userId.toString()))
                         .param("bookId", bookId.toString()))
-                .andExpect(status().isFound());
+                .andExpect(status().isFound())
+                .andExpect(content().string(containsString("")));
     }
 
     @Test
@@ -57,7 +61,8 @@ class ShoppingCartControllerTest {
         mockMvc.perform(post("/cart/remove")
                         .param("userId", userId.toString())
                         .param("bookId", bookId.toString()))
-                .andExpect(status().isFound());
+                .andExpect(status().isFound())
+                .andExpect(content().string(containsString("")));
     }
 
     @Test
@@ -66,7 +71,8 @@ class ShoppingCartControllerTest {
         when(userService.clearCart(userId)).thenReturn(true);
         mockMvc.perform(post("/cart/clear")
                         .param("userId", userId.toString()))
-                .andExpect(status().isFound());
+                .andExpect(status().isFound())
+                .andExpect(content().string(containsString("")));
     }
 
     @Test
@@ -79,7 +85,8 @@ class ShoppingCartControllerTest {
                         .param("userId", userId.toString())
                         .param("bookId", bookId.toString())
                         .param("orderAmount", orderAmount.toString()))
-                .andExpect(status().isFound());
+                .andExpect(status().isFound())
+                .andExpect(content().string(containsString("")));
 
     }
 
@@ -90,6 +97,7 @@ class ShoppingCartControllerTest {
         when(userService.checkoutUser(userId)).thenReturn(true);
         mockMvc.perform(post("/cart/COH")
                         .param("userId", userId.toString()))
-                .andExpect(status().isFound());
+                .andExpect(status().isFound())
+                .andExpect(content().string(containsString("")));
     }
 }
