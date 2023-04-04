@@ -137,6 +137,7 @@ public class HttpTest {
         when(userService.createUser(name, false)).thenReturn(1);
         this.mockMvc.perform(get("/user/recommendation").cookie(new Cookie("userId", userId.toString()))
                         .param("username", name))
-                .andExpect(status().isFound());
+                .andExpect(status().isFound())
+                .andExpect(content().string(containsString("")));
     }
 }

@@ -47,11 +47,7 @@ public class UserController {
         if(user == null) {
             return "redirect:/home";
         }else{
-            /*String result_genre = user.getMostCommonGenre();
-            List<Book> list_books = bookService.getBooks(result_genre);
-            list_books.removeIf(book ->user.getPurchaseHistory().contains(book));*/
             List<Book> recommended_books = userService.recommendedBooks(userId);
-            //List<Book> recommended_books = user.recommendedBooks(all_books);
             model.addAttribute("user", user);
             model.addAttribute("books", recommended_books);
             return "recommendation";
