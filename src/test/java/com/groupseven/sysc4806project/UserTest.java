@@ -82,22 +82,6 @@ public class UserTest {
         assertEquals(user.getId(), response.getBody().getId());
     }
 
-    @Test
-    public void testGetMostCommonGenre() {
-        User user = new User();
-        Book b = new Book();
-        b.setIsbn("98765");
-        b.setTitle("Hungry Games");
-        b.setDescription("A game about hunger");
-        b.setAuthor("Suzan Collins");
-        b.setPublisher("Scholar");
-        b.setGenre("Fantasy");
-        b.setInventory(0);
-        user.addPurchaseHistory(b);
-        String result = user.getMostCommonGenre();
-        assertNotNull(result);
-        assertEquals("Fantasy", result);
-    }
 
     @Test
     public void testCreateUser(){

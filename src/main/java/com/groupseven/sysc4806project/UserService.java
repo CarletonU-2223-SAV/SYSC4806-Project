@@ -5,9 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -168,5 +167,40 @@ public class UserService {
         user.addPurchaseHistory(b);
         userRepository.save(user);
         return true;
+    }
+
+    @GetMapping("/get-recommendation")
+    public List<Book> recommendedBooks(@RequestParam Integer userId) {
+        User user = this.getUser(userId);
+        if(user == null){
+            return null;
+        }
+        Set<String> input_genres = new HashSet<>();
+        for(Book book : user.getPurchaseHistory()) {
+            String genre = book.getGenre();
+            input_genres.add(genre);
+        }
+        Map<Book, Double> similarity_map = new HashMap<>();
+
+        for(Book book : bookRepository.findAll()) {
+            String[] book_genres = book.getGenre().split(",");
+            Set<String> book_genre_set = Set.of(book_genres);
+
+            int intersection_size = 0;
+            for(String genre : input_genres) {
+                if(book_genre_set.contains(genre)){
+                    intersection_size++;
+                }
+            }
+            int union_size = input_genres.size() + book_genre_set.size() - intersection_size;
+            double jac_distance = intersection_size/ (double)union_size;
+            similarity_map.put(book, jac_distance);
+        }
+
+        return similarity_map.entrySet().stream()
+                .filter(entry->!user.getPurchaseHistory().contains(entry.getKey()))
+                .sorted(Map.Entry.<Book, Double>comparingByValue().reversed())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 }
