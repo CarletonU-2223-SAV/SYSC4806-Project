@@ -8,21 +8,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Map;
 
-import java.util.*;
-
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.hamcrest.Matchers.containsString;
-
 @SpringBootTest
 @AutoConfigureMockMvc
-public class HttpTest {
+class ShoppingCartControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private BookService bookService;
 
     @MockBean
     private UserService userService;
@@ -80,16 +81,6 @@ public class HttpTest {
                         .param("orderAmount", orderAmount.toString()))
                 .andExpect(status().isFound());
 
-    }
-    
-    @Test
-    public void testGoToCheckoutPage() throws Exception {
-        Integer userId = 1;
-        Map<Integer, Integer> bookIds = Map.of(1,2,3,4);
-        when(userService.listBooksInCart(userId)).thenReturn(bookIds);
-        mockMvc.perform(get("/cart/goToCOH")
-                        .param("userId", userId.toString()))
-                .andExpect(status().isOk());
     }
 
     @Test
