@@ -23,6 +23,8 @@ public class ShoppingCartController {
     private final RestTemplate restTemplate;
 
     private static final String SHIPPING_API = "https://amazin.azurewebsites.net/api/calculateshipping";
+    //private static final String TIMELINE_API = "https://amazin.azurewebsites.net/api/getShippingTimeline";
+    private static final String TIMELINE_API = "http://localhost:7072/api/getShippingTimeline";
 
     @Autowired
     public ShoppingCartController(UserService userService, BookService bookService){
@@ -118,8 +120,22 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/COH")
-    public String checkout(@RequestParam Integer userId){
+    public String checkout(@RequestParam Integer userId, @RequestParam(defaultValue = "NONE_PROVIDED") String destination, Model model){
         userService.checkoutUser(userId);
-        return "redirect:/home";
+
+        User user = userService.getUser(userId);
+        String shippingDate = null;
+        if (user != null) {
+            model.addAttribute("user", user);
+
+            try {
+                shippingDate = restTemplate.postForObject(TIMELINE_API, destination, String.class);
+            } catch (Exception e) {
+                // Don't want to break the entire page if Azure goes down
+                e.printStackTrace();
+            }
+        }
+        model.addAttribute("shippingDate", shippingDate);
+        return "confirm-checkout";
     }
 }

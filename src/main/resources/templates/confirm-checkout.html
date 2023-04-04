@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Amazin Bookstore</title>
+
+  <!-- Use Tailwind for CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Auto redirect home -->
+  <script type="text/javascript">
+    setTimeout(() => document.location.href = "/home", 5000)
+  </script>
+</head>
+<body>
+  <!-- Include header at top of page -->
+  <div th:insert="~{header :: header(user=${user})}"></div>
+
+  <div class="mx-4">
+    <p>
+      Thank you for your order!
+      <span th:if="${shippingDate != null}">
+        Your order will arrive by <span class="font-bold" th:text="${shippingDate}" />.
+      </span>
+    </p>
+    <p>
+      You will now be redirected to the home page. Click <a href="/home" class="text-sky-400">here</a> if you are not redirected.
+    </p>
+  </div>
+</body>
+</html>

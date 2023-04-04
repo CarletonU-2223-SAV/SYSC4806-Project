@@ -12,7 +12,45 @@
   <div th:insert="~{header :: header}"></div>
 
   <div class="mx-4">
-    <form action="">
+    <table th:unless="${user == null}" class="w-1/2">
+      <legend class="text-2xl font-semibold text-gray-800 my-4"><span>Shopping Cart</span></legend>
+      <thead>
+      <tr>
+        <th></th>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Order Amount</th>
+      </tr>
+      </thead>
+      <tbody class="text-center">
+      <tr th:each="book : ${books.keySet()}">
+        <td class="w-16 h-16">
+          <img th:src="${book.getImageUrl()}">
+        </td>
+        <td>
+          <p th:text="${book.getIsbn()}" />
+        </td>
+        <td>
+          <p th:text="${book.getTitle()}" />
+        </td>
+        <td>
+          <p th:text="'$' + ${#numbers.formatDecimal(book.getPrice(), 0, 'COMMA', 2, 'POINT')}" />
+        </td>
+        <td>
+          <p th:text="${books.get(book)}" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3"></td>
+        <td>
+          <b class="inline-block">Total: </b><p class="inline-block pl-2" th:text="'$' + ${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 2, 'POINT')}" />
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <form action="/cart/COH" method="POST">
       <h3 class="text-2xl font-semibold text-gray-800 mt-4">Personal Information</h3><br>
       <label class="text-sm font-medium text-gray-700 uppercase tracking-wide py-1">First Name:<input type="text" class="border-2 rounded-md"></label>
       <label class="text-sm font-medium text-gray-700 uppercase tracking-wide py-1">Last Name: </label>
@@ -23,7 +61,7 @@
       <label class="text-sm font-medium text-gray-700 uppercase tracking-wide py-1">Address: </label>
       <input type="text" class="border-2 rounded-md">
       <label class="text-sm font-medium text-gray-700 uppercase tracking-wide py-1">City: </label>
-      <input type="text" class="border-2 rounded-md">
+      <input type="text" name="destination" class="border-2 rounded-md">
       <label class="text-sm font-medium text-gray-700 uppercase tracking-wide py-1">Country:</label>
       <input type="text" class="border-2 rounded-md"><br>
       <h3 class="text-2xl font-semibold text-gray-800 mt-4">Payment Method</h3><br>
@@ -33,54 +71,15 @@
       <input type="month" class="border-2 rounded-md">
       <label class="text-sm font-medium text-gray-700 uppercase tracking-wide py-1">CVV:</label>
       <input type="number" class="border-2 rounded-md"><br>
-    </form>
+      <input name="userId" type="hidden" th:value="${userId}">
 
-    <table th:unless="${user == null}" class="w-1/2">
-      <legend class="text-2xl font-semibold text-gray-800 my-4"><span>Shopping Cart</span></legend>
-      <thead>
-        <tr>
-          <th></th>
-          <th>ISBN</th>
-          <th>Title</th>
-          <th>Price</th>
-          <th>Order Amount</th>
-        </tr>
-      </thead>
-      <tbody class="text-center">
-        <tr th:each="book : ${books.keySet()}">
-          <td class="w-16 h-16">
-            <img th:src="${book.getImageUrl()}">
-          </td>
-          <td>
-            <p th:text="${book.getIsbn()}" />
-          </td>
-          <td>
-            <p th:text="${book.getTitle()}" />
-          </td>
-          <td>
-            <p th:text="'$' + ${#numbers.formatDecimal(book.getPrice(), 0, 'COMMA', 2, 'POINT')}" />
-          </td>
-          <td>
-            <p th:text="${books.get(book)}" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3"></td>
-          <td>
-            <b class="inline-block">Total: </b><p class="inline-block pl-2" th:text="'$' + ${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 2, 'POINT')}" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="flex">
-      <form action="/cart/COH" method="POST">
-        <input name="userId" type="hidden"th:value="${userId}">
+      <div class="flex my-2">
         <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Order Now!</button>
-      </form>
-      <form action="/cart" method="GET">
-        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">Back</button>
-      </form>
-    </div>
+        <button class="ease-in-out duration-300 hover:bg-blue-800 hover:text-white border-blue-800 border-2 rounded-md px-4 py-1 ml-2">
+          <a href="/cart">Back</a>
+        </button>
+      </div>
+    </form>
   </div>
 
 
