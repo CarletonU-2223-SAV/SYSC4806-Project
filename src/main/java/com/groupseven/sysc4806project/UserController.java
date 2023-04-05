@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -50,11 +47,9 @@ public class UserController {
         if(user == null) {
             return "redirect:/home";
         }else{
-            String result_genre = user.getMostCommonGenre();
-            List<Book> list_books = bookService.getBooks(result_genre);
-            list_books.removeIf(book ->user.getPurchaseHistory().contains(book));
+            List<Book> recommended_books = userService.recommendedBooks(userId);
             model.addAttribute("user", user);
-            model.addAttribute("books", list_books);
+            model.addAttribute("books", recommended_books);
             return "recommendation";
         }
     }

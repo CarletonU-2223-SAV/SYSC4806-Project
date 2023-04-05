@@ -132,11 +132,13 @@ public class HttpTest {
     
     @Test
     public void recommendation() throws Exception {
-        String name = "Beta";
+        User user = new User();
         Integer userId = 1;
-        when(userService.createUser(name, false)).thenReturn(1);
-        this.mockMvc.perform(get("/user/recommendation").cookie(new Cookie("userId", userId.toString()))
-                        .param("username", name))
-                .andExpect(status().isFound());
+        List<Book> lst = new ArrayList<>();
+        when(userService.getUser(user.getId())).thenReturn(user);
+        when(userService.recommendedBooks(userId)).thenReturn(lst);
+        this.mockMvc.perform(get("/user/recommendation").cookie(new Cookie("userId", user.getId() +"")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("There are no books to display")));
     }
 }

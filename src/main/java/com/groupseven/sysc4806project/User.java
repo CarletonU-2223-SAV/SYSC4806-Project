@@ -2,9 +2,7 @@ package com.groupseven.sysc4806project;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -62,18 +60,6 @@ public class User {
 
     public void setPurchaseHistory(Set<Book> purchaseHistory) {
         this.purchaseHistory = purchaseHistory;
-    }
-
-    @Transient
-    public String getMostCommonGenre() {
-        Set<Book> books = this.getPurchaseHistory();
-        //initiate the dictionary containing the book's genre and their counts
-        Map<String, Long> dictionary = books.stream().collect(Collectors.groupingBy(Book::getGenre, Collectors.counting()));
-        //get most common genre if it exists, null otherwise
-        String result_genre = dictionary.entrySet().stream()
-                .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey).orElse(null);
-        return result_genre;
     }
 
     @Transient
