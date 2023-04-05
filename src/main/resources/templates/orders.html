@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Amazin Bookstore</title>
+
+    <!-- Use Tailwind for CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!-- Include header at top of page -->
+    <div th:insert="~{header :: header(user=${user})}"></div>
+
+    <div class="mx-4">
+        <div th:each="sum, iter : ${allOrders.keySet()}">
+            <h3 class="text-2xl font-semibold text-gray-800 mt-4" th:text="'Order '+ ${iter.index+1} +':'" />
+            <table th:unless="${allOrders == null}" class="w-1/2">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ISBN</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Order Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr th:each="book : ${allOrders.get(sum).keySet()}">
+                        <td class="w-16 h-16">
+                            <img th:src="${book.getImageUrl()}">
+                        </td>
+                        <td>
+                            <p th:text="${book.getIsbn()}" />
+                        </td>
+                        <td>
+                            <p th:text="${book.getTitle()}" />
+                        </td>
+                        <td>
+                            <p th:text="'$' + ${#numbers.formatDecimal(book.getPrice(), 0, 'COMMA', 2, 'POINT')}" />
+                        </td>
+                        <td>
+                            <p th:text="${allOrders.get(sum).get(book)}" />
+                        </td>
+                        <td>
+                            <p class="inline-block">Please leave a review below:</p>
+                            <textarea class="inline-block form-textarea w-full border border-gray-400" rows="3"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td>
+                            <b class="inline-block">Total: </b><p class="inline-block pl-2" th:text="'$' + ${#numbers.formatDecimal(sum, 0, 'COMMA', 2, 'POINT')}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="ml-4 my-4" th:if="${allOrders==null || allOrders.isEmpty()}">No Orders have been made</p>
+    </div>
+</body>
+</html>

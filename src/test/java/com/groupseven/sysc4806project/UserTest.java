@@ -47,4 +47,15 @@ public class UserTest {
         user.setPurchaseHistory(purchasedBooks);
         assertEquals(purchasedBooks, user.getPurchaseHistory());
     }
+
+    @Test
+    public void set_get_OrderHistory() {
+        User user = new User();
+        OrderHistory orderHistory = new OrderHistory();
+        user.setOrderHistory(orderHistory);
+        ShoppingCart cart = new ShoppingCart();
+        orderHistory.addOrder(cart);
+        user.addToOrderHistory(cart);
+        assertEquals(orderHistory, user.getOrderHistory());
+    }
 }

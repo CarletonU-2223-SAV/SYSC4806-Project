@@ -1,5 +1,7 @@
 package com.groupseven.sysc4806project;
 
+import org.aspectj.weaver.ast.Or;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,8 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private OrderHistoryRepository orderHistoryRepository;
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -220,7 +224,9 @@ public class UserServiceTest {
     public void testCheckoutUser(){
         User user = new User();
         ShoppingCart cart = new ShoppingCart();
+        OrderHistory orderHistory = new OrderHistory();
         user.setCart(cart);
+        user.setOrderHistory(orderHistory);
         for (int i=0; i < 5; i++){
             Book book = new Book();
             book.setInventory(20);
@@ -247,5 +253,22 @@ public class UserServiceTest {
         for (Book book : user.getPurchaseHistory()){
             assertEquals(15, book.getInventory());
         }
+    }
+
+    @Test
+    public void testGetOrderHistory(){
+        User user = new User();
+        OrderHistory orderHistory = new OrderHistory();
+        user.setOrderHistory(orderHistory);
+        userRepository.save(user);
+
+        ResponseEntity<OrderHistory> response = restTemplate.getForEntity(
+                "/api/users/" + user.getId() + "/get-order-history",
+                OrderHistory.class
+        );
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(orderHistory.getId(), response.getBody().getId());
+        assertFalse(orderHistoryRepository.findById(orderHistory.getId()).isEmpty());
     }
 }

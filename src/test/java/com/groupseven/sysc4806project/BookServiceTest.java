@@ -210,7 +210,7 @@ public class BookServiceTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertTrue(response.getBody());
-        assertTrue(this.bookRepository.findById(id).isEmpty());
+        assertTrue(this.bookRepository.findById(id).orElse(null).isDeleted());
     }
 
     @Test

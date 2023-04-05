@@ -24,7 +24,7 @@ public class BookService {
     @GetMapping("")
     public List<Book> list() {
         List<Book> books = new ArrayList<>();
-        this.repo.findAll().iterator().forEachRemaining(books::add);
+        this.repo.findBooksByDeleted(false).iterator().forEachRemaining(books::add);
         return books;
     }
 
@@ -138,11 +138,8 @@ public class BookService {
             // Could not find book with given ID
             return false;
         }
-
-        // Free up image file
-        imageService.removeImage(bookId);
-
-        this.repo.delete(bookOptional.get());
+        bookOptional.get().setDeleted(true);
+        this.repo.save(bookOptional.get());
         return true;
     }
     @GetMapping("/get-books")
