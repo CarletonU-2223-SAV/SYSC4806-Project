@@ -84,3 +84,18 @@ The team's plan for milestone 3 is:
 - Add more Azure Functions to demo their capabilities to a greater extent (shipping timelines, create return label, etc.)
 - Enhance recommendations to use Jaccard Distance in addition to genre data
 - Create an order history page, optionally add a review option
+
+#### Milestone 3
+
+In milestone 3, our team enhanced features implemented in milestone 2, cleaned up some code, and added new features.
+- Modified purchase recommendations
+  - Still recommends books based off genre but now uses Jaccard distance algorithm
+- Add Order History feature
+  - Users can now see all past orders once books are checked out
+  - Can also leave a review per order
+- Split up all tests cases
+  - Seperated the tests so each class in main java folder have their own respective test class
+  - For controller tests, checked all page endpoints display the correct content 
+- Add an Azure Function to show shipping timeline
+  - Deployed under a separate project
+  - After user checks out books, order's estimated time of arrival gets displayed based off their location
