@@ -23,8 +23,7 @@ public class ShoppingCartController {
     private final RestTemplate restTemplate;
 
     private static final String SHIPPING_API = "https://amazin.azurewebsites.net/api/calculateshipping";
-    //private static final String TIMELINE_API = "https://amazin.azurewebsites.net/api/getShippingTimeline";
-    private static final String TIMELINE_API = "http://localhost:7072/api/getShippingTimeline";
+    private static final String TIMELINE_API = "https://amazin.azurewebsites.net/api/getShippingTimeline";
 
     @Autowired
     public ShoppingCartController(UserService userService, BookService bookService){
