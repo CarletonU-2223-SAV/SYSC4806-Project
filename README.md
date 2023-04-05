@@ -84,3 +84,28 @@ The team's plan for milestone 3 is:
 - Add more Azure Functions to demo their capabilities to a greater extent (shipping timelines, create return label, etc.)
 - Enhance recommendations to use Jaccard Distance in addition to genre data
 - Create an order history page, optionally add a review option
+
+#### Milestone 3
+
+In milestone 3, our team enhanced the features implemented in milestone 2 and added new ones.
+- Modified purchase recommendations
+  - still recommends books based off genre but now uses Jaccard distance algorithm
+- Add login/signup feature to manage users
+  - Signup requires a unique username
+  - Login only requires a username, user authentication is outside the scope of this project
+- Add checkout feature
+  - Books now have a cost associated with them
+  - Automatically updates inventory
+  - Presents a total cost, asks for shipping + billing info
+- Small refactor to make User own a ShoppingCart instead of the other way around
+  - Makes checkout function and login/logout easier to manage
+- Configure a separate database for testing
+  - Avoids cluttering the local database with test entries when running tests locally
+- Add an Azure Function to show different shipping timelines
+  - Deployed under a separate project
+  - Allows users to select from 3 different shipping options
+
+The team's plan for milestone 3 is:
+- Add more Azure Functions to demo their capabilities to a greater extent (shipping timelines, create return label, etc.)
+- Enhance recommendations to use Jaccard Distance in addition to genre data
+- Create an order history page, optionally add a review option
