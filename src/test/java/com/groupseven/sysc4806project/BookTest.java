@@ -79,4 +79,11 @@ public class BookTest {
         book.setId(1);
         assertEquals("/book-img/1", book.getImageUrl());
     }
+
+    @Test
+    public void set_getDeleted(){
+        Book book = new Book();
+        book.setDeleted(true);
+        assertTrue(book.isDeleted());
+    }
 }
