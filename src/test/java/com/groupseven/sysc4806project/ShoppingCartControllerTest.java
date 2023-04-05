@@ -93,11 +93,10 @@ class ShoppingCartControllerTest {
     @Test
     public void testCheckout() throws Exception {
         Integer userId = 1;
-        Map<Integer, Integer> bookIds = Map.of(1,2,3,4);
         when(userService.checkoutUser(userId)).thenReturn(true);
         mockMvc.perform(post("/cart/COH")
                         .param("userId", userId.toString()))
-                .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/home"));
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Thank you for your order")));
     }
 }
