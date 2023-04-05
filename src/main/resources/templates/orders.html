@@ -13,7 +13,7 @@
 
     <div class="mx-4">
         <div th:each="sum, iter : ${allOrders.keySet()}">
-            <h3 th:text="'Order '+ ${iter.index}" />
+            <h3 th:text="'Order '+ ${iter.index+1}" />
             <table th:unless="${allOrders == null}" class="w-1/2">
                 <thead>
                     <tr>
