@@ -16,6 +16,7 @@ public class Book {
     private String isbn, description, title, author, publisher;
 
     private String genre;
+    private boolean deleted;
 
     public String getGenre() {
         return genre;
@@ -23,6 +24,13 @@ public class Book {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Book() {

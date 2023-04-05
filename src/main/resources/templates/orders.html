@@ -51,7 +51,7 @@
                 </tbody>
             </table>
         </div>
-        <p class="ml-4 my-4" th:if="${allOrders == null}">No Orders have been made</p>
+        <p class="ml-4 my-4" th:if="${allOrders==null || allOrders.isEmpty()}">No Orders have been made</p>
     </div>
 </body>
 </html>

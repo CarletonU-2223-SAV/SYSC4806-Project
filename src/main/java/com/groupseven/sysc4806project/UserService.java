@@ -150,8 +150,8 @@ public class UserService {
             user.getPurchaseHistory().add(book);
         }
         user.addToOrderHistory(cart);
+        user.setCart(new ShoppingCart());
         userRepository.save(user);
-        clearCart(userId);
         return true;
     }
 
