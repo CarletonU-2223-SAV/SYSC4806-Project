@@ -32,9 +32,11 @@ public class UserService {
                               @RequestParam Boolean isAdmin){
         User user = new User();
         ShoppingCart shoppingCart = new ShoppingCart();
+        OrderHistory orderHistory = new OrderHistory();
         user.setName(name);
         user.setAdmin(isAdmin);
         user.setCart(shoppingCart);
+        user.setOrderHistory(orderHistory);
         userRepository.save(user);
         return user.getId();
     }
@@ -147,6 +149,7 @@ public class UserService {
             bookRepository.save(book);
             user.getPurchaseHistory().add(book);
         }
+        user.addToOrderHistory(cart);
         userRepository.save(user);
         clearCart(userId);
         return true;
@@ -202,5 +205,15 @@ public class UserService {
                 .sorted(Map.Entry.<Book, Double>comparingByValue().reversed())
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+    }
+    
+    @GetMapping("/{userId}/get-order-history")
+    public OrderHistory getOrderHistory(@PathVariable Integer userId){
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null){
+            //user not in repo
+            return null;
+        }
+        return user.getOrderHistory();
     }
 }

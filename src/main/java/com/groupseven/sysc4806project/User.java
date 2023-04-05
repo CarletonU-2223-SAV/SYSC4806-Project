@@ -14,6 +14,8 @@ public class User {
     private ShoppingCart cart;
     private Set<Book> purchaseHistory;
 
+    private OrderHistory orderHistory;
+
     public User() {
         purchaseHistory = new HashSet<>();
     }
@@ -66,5 +68,18 @@ public class User {
     public boolean addPurchaseHistory(Book book) {
         this.purchaseHistory.add(book);
         return true;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public OrderHistory getOrderHistory() {
+        return orderHistory;
+    }
+
+    public void setOrderHistory(OrderHistory orderHistory) {
+        this.orderHistory = orderHistory;
+    }
+
+    public void addToOrderHistory(ShoppingCart cart){
+        orderHistory.addOrder(cart);
     }
 }
