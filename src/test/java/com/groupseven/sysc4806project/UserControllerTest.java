@@ -8,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,12 +57,13 @@ public class UserControllerTest {
 
     @Test
     public void recommendation() throws Exception {
-        String name = "Beta";
+        User user = new User();
         Integer userId = 1;
-        when(userService.createUser(name, false)).thenReturn(1);
-        this.mockMvc.perform(get("/user/recommendation").cookie(new Cookie("userId", userId.toString()))
-                        .param("username", name))
-                .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/home"));
+        List<Book> lst = new ArrayList<>();
+        when(userService.getUser(user.getId())).thenReturn(user);
+        when(userService.recommendedBooks(userId)).thenReturn(lst);
+        this.mockMvc.perform(get("/user/recommendation").cookie(new Cookie("userId", user.getId() +"")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("There are no books to display")));
     }
 }

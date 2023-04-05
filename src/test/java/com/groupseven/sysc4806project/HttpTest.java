@@ -101,16 +101,4 @@ public class HttpTest {
                         .param("userId", userId.toString()))
                 .andExpect(status().isFound());
     }
-    
-    @Test
-    public void recommendation() throws Exception {
-        User user = new User();
-        Integer userId = 1;
-        List<Book> lst = new ArrayList<>();
-        when(userService.getUser(user.getId())).thenReturn(user);
-        when(userService.recommendedBooks(userId)).thenReturn(lst);
-        this.mockMvc.perform(get("/user/recommendation").cookie(new Cookie("userId", user.getId() +"")))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("There are no books to display")));
-    }
 }
