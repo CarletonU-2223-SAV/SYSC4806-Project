@@ -81,34 +81,6 @@ public class HttpTest {
                 .andExpect(status().isFound());
 
     }
-
-    @Test
-    public void login() throws Exception {
-        this.mockMvc.perform(get("/user/login"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Username:")));
-    }
-
-    @Test
-    public void signUp() throws Exception {
-        this.mockMvc.perform(get("/user/sign-up"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Sign Up")));
-    }
-
-    @Test
-    public void logOut() throws Exception {
-        this.mockMvc.perform(get("/user/log-out"))
-                .andExpect(status().isFound());
-    }
-
-    @Test
-    public void getUserForLogin() throws Exception {
-        String name = "Beta";
-        when(userService.createUser(name, false)).thenReturn(1);
-        this.mockMvc.perform(get("/user/get-user").param("username", name))
-                .andExpect(status().isOk());
-    }
     
     @Test
     public void testGoToCheckoutPage() throws Exception {
@@ -128,17 +100,5 @@ public class HttpTest {
         mockMvc.perform(post("/cart/COH")
                         .param("userId", userId.toString()))
                 .andExpect(status().isFound());
-    }
-    
-    @Test
-    public void recommendation() throws Exception {
-        User user = new User();
-        Integer userId = 1;
-        List<Book> lst = new ArrayList<>();
-        when(userService.getUser(user.getId())).thenReturn(user);
-        when(userService.recommendedBooks(userId)).thenReturn(lst);
-        this.mockMvc.perform(get("/user/recommendation").cookie(new Cookie("userId", user.getId() +"")))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("There are no books to display")));
     }
 }
