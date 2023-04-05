@@ -29,7 +29,7 @@ public class OrderHistoryController {
         User user = userService.getUser(userId);
         if (user != null){
             OrderHistory orderHistory = userService.getOrderHistory(userId);
-            Map<BigDecimal, Map<Book, Integer>> allOrders = new HashMap<>();
+            Map<BigDecimal, Map<Book, Integer>> allOrders = new TreeMap<>();
             for (ShoppingCart cart : orderHistory.getPastOrders()){
                 BigDecimal sum = BigDecimal.ZERO;
                 Map<Integer, Integer> bookIds = cart.getBooks();

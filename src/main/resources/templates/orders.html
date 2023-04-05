@@ -13,7 +13,7 @@
 
     <div class="mx-4">
         <div th:each="sum, iter : ${allOrders.keySet()}">
-            <h3 th:text="'Order '+ ${iter.index+1}" />
+            <h3 class="text-2xl font-semibold text-gray-800 mt-4" th:text="'Order '+ ${iter.index+1} +':'" />
             <table th:unless="${allOrders == null}" class="w-1/2">
                 <thead>
                     <tr>
@@ -40,6 +40,10 @@
                         </td>
                         <td>
                             <p th:text="${allOrders.get(sum).get(book)}" />
+                        </td>
+                        <td>
+                            <p class="inline-block">Please leave a review below:</p>
+                            <textarea class="inline-block form-textarea w-full border border-gray-400" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
