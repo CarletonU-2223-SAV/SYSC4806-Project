@@ -224,7 +224,9 @@ public class UserServiceTest {
     public void testCheckoutUser(){
         User user = new User();
         ShoppingCart cart = new ShoppingCart();
+        OrderHistory orderHistory = new OrderHistory();
         user.setCart(cart);
+        user.setOrderHistory(orderHistory);
         for (int i=0; i < 5; i++){
             Book book = new Book();
             book.setInventory(20);
